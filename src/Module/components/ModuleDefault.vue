@@ -31,7 +31,30 @@
         </v-expansion-panel>
       </v-expansion-panels>
     </div>
-    <div class="module-default__container"></div>
+    <div class="module-default__container">
+      <v-expansion-panels class="module-default__playlist">
+        <v-expansion-panel>
+          <v-expansion-panel-header disable-icon-rotate>
+            Vision Podcast
+            <template v-slot:actions>
+              <v-icon color="teal">mdi-check</v-icon>
+            </template>
+          </v-expansion-panel-header>
+          <v-expansion-panel-content></v-expansion-panel-content>
+        </v-expansion-panel>
+        <v-expansion-panel>
+          <v-expansion-panel-header>Product Demonstration</v-expansion-panel-header>
+          <v-expansion-panel-content></v-expansion-panel-content>
+        </v-expansion-panel>
+        <v-expansion-panel>
+          <v-expansion-panel-header>Industry Panel</v-expansion-panel-header>
+          <v-expansion-panel-content></v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
+      <br />
+      <br />
+      <v-btn x-large outlined depressed>Finish</v-btn>
+    </div>
   </v-container>
 </template>
 
@@ -58,3 +81,14 @@ export default {
   }
 };
 </script>
+
+<style lang="scss">
+.module-default {
+  &__container {
+    width: 100%;
+  }
+  &__playlist {
+    width: 100%;
+  }
+}
+</style>
