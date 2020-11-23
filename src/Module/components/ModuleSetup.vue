@@ -61,7 +61,7 @@ export default {
   name: 'ModuleSetup',
   setup() {
     const setupInstructions = ref(['']);
-    const setup = reactive({});
+    // const setup = reactive({});
     return {
       setupInstructions
     };
@@ -80,6 +80,8 @@ export default {
   }
   &__right-column {
     width: 100%;
+  }
+
   &__none {
     border-radius: 5px;
     // border: 1px solid #dedede;
@@ -91,6 +93,5 @@ export default {
     font-size: 18px;
     padding-top: 35px;
   }
-}
 }
 </style>
