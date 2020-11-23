@@ -32,8 +32,16 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
+      <v-progress-linear
+        class="module-default__collapse-divider"
+        color="#dedede"
+        height="2"
+        value="100"
+        buffer-value="100"
+        stream
+      />
     </div>
-    <div class="module-default__container">
+    <div class="module-edit__container">
       <v-expansion-panels class="module-default__playlist">
         <v-expansion-panel>
           <v-expansion-panel-header disable-icon-rotate>
@@ -86,6 +94,38 @@ export default {
 
 <style lang="scss">
 .module-default {
+  &__none {
+    border-radius: 5px;
+    // border: 1px solid #dedede;
+    height: 100px;
+    text-align: center;
+    background-color: #dedede;
+    font-weight: 700;
+    color: #ffffff;
+    font-size: 18px;
+    padding-top: 35px;
+  }
+
+  &__collapse-divider {
+    margin-top: 15px;
+    margin-bottom: 75px;
+    margin-right: none;
+    margin-left: none;
+    padding-right: none;
+    padding-left: none;
+    width: 100%;
+  }
+
+  &__collapse-title {
+    color: #dedede;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 900;
+    letter-spacing: 1px;
+    font-size: 13px;
+    //  text-uppercase font-weight-bold text-subtitle-2 text-center
+  }
+
   &__container {
     width: 100%;
   }
