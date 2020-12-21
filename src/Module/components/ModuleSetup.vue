@@ -1,69 +1,122 @@
 <template>
-  <v-container class="module-edit">
-    <div class="module-edit__container">
-      <v-expansion-panels class="module-default__playlist">
-        <v-expansion-panel>
-          <v-expansion-panel-header disable-icon-rotate>
-            Vision Podcast
-            <template v-slot:actions>
-              <v-icon color="teal">mdi-check</v-icon>
-            </template>
-          </v-expansion-panel-header>
-          <v-expansion-panel-content>
-            <div class="module-setup__two-column">
-              <div class="module-setup__left-column">
-                <v-text-field outlined label="Video Name"></v-text-field>
+  <ValidationObserver v-slot="{ invalid }" slim>
+    <v-container class="module-edit">
+      <div class="module-edit__container">
+        <v-expansion-panels class="module-default__playlist">
+          <v-expansion-panel>
+            <v-expansion-panel-header disable-icon-rotate>
+              Vision Podcast
+              <template v-slot:actions>
+                <v-icon color="teal">mdi-check</v-icon>
+              </template>
+            </v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <div class="module-setup__two-column">
+                <div class="module-setup__left-column">
+                  <validation-provider v-slot="{ errors }" slim rules="required">
+                    <v-text-field
+                      v-model="visionVideo"
+                      :error-messages="errors"
+                      outlined
+                      label="Video Name"
+                    ></v-text-field>
+                  </validation-provider>
+                </div>
+                <div class="module-setup__right-column">
+                  <validation-provider v-slot="{ errors }" slim rules="required">
+                    <v-text-field
+                      v-model="visionLink"
+                      :error-messages="errors"
+                      outlined
+                      label="Link"
+                    ></v-text-field>
+                  </validation-provider>
+                </div>
               </div>
-              <div class="module-setup__right-column">
-                <v-text-field outlined label="Link"></v-text-field>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+          <v-expansion-panel>
+            <v-expansion-panel-header>Product Demonstration</v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <div class="module-setup__two-column">
+                <div class="module-setup__left-column">
+                  <validation-provider v-slot="{ errors }" slim rules="required">
+                    <v-text-field
+                      v-model="productVideo"
+                      outlined
+                      :error-messages="errors"
+                      label="Video Name"
+                    ></v-text-field>
+                  </validation-provider>
+                </div>
+                <div class="module-setup__right-column">
+                  <validation-provider v-slot="{ errors }" slim rules="required">
+                    <v-text-field
+                      v-model="productLink"
+                      :error-messages="errors"
+                      outlined
+                      label="Link"
+                    ></v-text-field>
+                  </validation-provider>
+                </div>
               </div>
-            </div>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-        <v-expansion-panel>
-          <v-expansion-panel-header>Product Demonstration</v-expansion-panel-header>
-          <v-expansion-panel-content>
-            <div class="module-setup__two-column">
-              <div class="module-setup__left-column">
-                <v-text-field outlined label="Video Name"></v-text-field>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+          <v-expansion-panel>
+            <v-expansion-panel-header>Industry Panel</v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <div class="module-setup__two-column">
+                <div class="module-setup__left-column">
+                  <validation-provider v-slot="{ errors }" slim rules="required">
+                    <v-text-field
+                      v-model="industryVideo"
+                      :error-messages="errors"
+                      outlined
+                      label="Video Name"
+                    ></v-text-field>
+                  </validation-provider>
+                </div>
+                <div class="module-setup__right-column">
+                  <validation-provider v-slot="{ errors }" slim rules="required">
+                    <v-text-field
+                      v-model="industryLink"
+                      :error-messages="errors"
+                      outlined
+                      label="Link"
+                    ></v-text-field>
+                  </validation-provider>
+                </div>
               </div>
-              <div class="module-setup__right-column">
-                <v-text-field outlined label="Link"></v-text-field>
-              </div>
-            </div>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-        <v-expansion-panel>
-          <v-expansion-panel-header>Industry Panel</v-expansion-panel-header>
-          <v-expansion-panel-content>
-            <div class="module-setup__two-column">
-              <div class="module-setup__left-column">
-                <v-text-field outlined label="Video Name"></v-text-field>
-              </div>
-              <div class="module-setup__right-column">
-                <v-text-field outlined label="Link"></v-text-field>
-              </div>
-            </div>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-      </v-expansion-panels>
-      <br />
-      <br />
-      <v-btn x-large outlined depressed>Save</v-btn>
-    </div>
-  </v-container>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
+        <br />
+        <br />
+        <v-btn x-large outlined :disabled="invalid" depressed>Save</v-btn>
+      </div>
+    </v-container>
+  </ValidationObserver>
 </template>
 
 <script lang="ts">
-import { ref } from '@vue/composition-api';
+import { ref, reactive, toRefs } from '@vue/composition-api';
 
 export default {
   name: 'ModuleSetup',
   setup() {
     const setupInstructions = ref(['']);
+    const setup = reactive({
+      visionVideo: '',
+      visionLink: '',
+      productVideo: '',
+      productLink: '',
+      industryVideo: '',
+      industryLink: ''
+    });
     // const setup = reactive({});
     return {
-      setupInstructions
+      setupInstructions,
+      ...toRefs(setup)
     };
   }
 };
