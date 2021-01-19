@@ -99,27 +99,37 @@
 </template>
 
 <script lang="ts">
-import { ref, reactive, toRefs } from '@vue/composition-api';
+import { defineComponent } from '@vue/composition-api';
 
-export default {
+export default defineComponent({
   name: 'ModuleSetup',
-  setup() {
-    const setupInstructions = ref(['']);
-    const setup = reactive({
+  data() {
+    return {
       visionVideo: '',
       visionLink: '',
       productVideo: '',
       productLink: '',
       industryVideo: '',
       industryLink: ''
-    });
-    // const setup = reactive({});
-    return {
-      setupInstructions,
-      ...toRefs(setup)
     };
   }
-};
+  // setup() {
+  //   const setupInstructions = ref(['']);
+  //   const setup = reactive({
+  //     visionVideo: '',
+  //     visionLink: '',
+  //     productVideo: '',
+  //     productLink: '',
+  //     industryVideo: '',
+  //     industryLink: ''
+  //   });
+  //   // const setup = reactive({});
+  //   return {
+  //     setupInstructions,
+  //     ...toRefs(setup)
+  //   };
+  // }
+});
 </script>
 
 <style lang="scss">
