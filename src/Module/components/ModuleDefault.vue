@@ -61,10 +61,10 @@
           <v-expansion-panel-content></v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
-      <br />
-      <br />
-      <v-btn x-large outlined depressed>Finish</v-btn>
     </div>
+    <br />
+    <br />
+    <div><v-btn x-large outlined depressed>Finish</v-btn></div>
   </v-container>
 </template>
 

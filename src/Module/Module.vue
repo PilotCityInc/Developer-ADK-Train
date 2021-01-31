@@ -272,70 +272,69 @@ export default defineComponent({
     'module-presets': Module.Presets,
     'module-preview': Module.Default
   },
-    props: {
-  programCollection: {
-    required: true,
-    type: Object as PropType<Collection>
+  props: {
+    // programCollection: {
+    //   required: true,
+    //   type: Object as PropType<Collection>
+    // },
+    // programId: {
+    //   required: true,
+    //   type: String
+    // },
+    // visionName: {
+    //   required: true,
+    //   type: String
+    // },
+    // visionLink: {
+    //   required: true,
+    //   type: String
+    // },
+    // productName: {
+    //   required: true,
+    //   type: String
+    // },
+    // industryName: {
+    //   required: true,
+    //   type: String
+    // },
+    // industryLink: {
+    //   required: true,
+    //   type: String
+    // },
+    // trainGoal: {
+    //   required: true,
+    //   type: String
+    // },
+    // trainInstructions: {
+    //   required: true,
+    //   type: []
+    // }
   },
-  programId: {
-    required: true,
-    type: String
-  },
-  visionName: {
-    required: true,
-    type: String
-  },
-  visionLink: {
-    required: true,
-    type: String
-  },
-  productName: {
-    required: true,
-    type: String
-  },
-  industryName: {
-    required: true,
-    type: String
-  },
-  industryLink: {
-    required: true,
-    type: String
-  },
-  trainGoal: {
-    required: true,
-    type: String
-  },
-  trainInstructions: {
-    required: true, 
-    type: []
-  }
+  setup() // props
+  {
+    // const programDoc = props.programCollection.findOne(
+    //   {
+    //     _id: props.programId
+    //   },
+    //   { projection: { adks: 1 } }
+    // );
 
-    },
-  setup(props) {
-    
-    const programDoc = props.programCollection.findOne({
-      _id: props.programId
-    },
-    {projection: {adks: 1}});
-    
-    let visionName = ref("")
-    let visionLink = ref("")
-    let productName = ref("")
-    let industryName = ref("")
-    let industryLink = ref("")
-    let trainGoal = ref("")
-    let trainInstructions = ref("")
+    // const visionName = ref('');
+    // const visionLink = ref('');
+    // const productName = ref('');
+    // const industryName = ref('');
+    // const industryLink = ref('');
+    // const trainGoal = ref('');
+    // const trainInstructions = ref('');
 
-    let trainData = programDoc.adks.find((adk) => adk.name === "train")
-    visionName.value = trainData.visionName
-    visionLink.value = trainData.visionLink
-    productName.value = trainData.productName
-    industryName.value = trainData.industryName
-    industryLink.value = trainData.industryLink
-    trainGoal.value = trainData.trainGoal
-    trainInstructions.value = trainData.trainInstructions
-    
-    
+    // const trainData = programDoc.adks.find(adk => adk.name === 'train');
+    // visionName.value = trainData.visionName;
+    // visionLink.value = trainData.visionLink;
+    // productName.value = trainData.productName;
+    // industryName.value = trainData.industryName;
+    // industryLink.value = trainData.industryLink;
+    // trainGoal.value = trainData.trainGoal;
+    // trainInstructions.value = trainData.trainInstructions;
 
     // ENTER ACTIVITY NAME BELOW
     const moduleName = ref('Train');
