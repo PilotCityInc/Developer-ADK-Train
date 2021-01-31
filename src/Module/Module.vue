@@ -273,42 +273,42 @@ export default defineComponent({
     'module-preview': Module.Default
   },
     props: {
-  // programCollection: {
-  //   required: true,
-  //   type: Object as PropType<Collection>
-  // },
-  // programId: {
-  //   required: true,
-  //   type: String
-  // },
-  // visionName: {
-  //   required: true,
-  //   type: String
-  // },
-  // visionLink: {
-  //   required: true,
-  //   type: String
-  // },
-  // productName: {
-  //   required: true,
-  //   type: String
-  // },
-  // industryName: {
-  //   required: true,
-  //   type: String
-  // },
-  // industryLink: {
-  //   required: true,
-  //   type: String
-  // },
-  // trainGoal: {
-  //   required: true,
-  //   type: String
-  // },
-  // trainInstructions: {
-  //   required: true, 
-  //   type: []
-  // }
+  programCollection: {
+    required: true,
+    type: Object as PropType<Collection>
+  },
+  programId: {
+    required: true,
+    type: String
+  },
+  visionName: {
+    required: true,
+    type: String
+  },
+  visionLink: {
+    required: true,
+    type: String
+  },
+  productName: {
+    required: true,
+    type: String
+  },
+  industryName: {
+    required: true,
+    type: String
+  },
+  industryLink: {
+    required: true,
+    type: String
+  },
+  trainGoal: {
+    required: true,
+    type: String
+  },
+  trainInstructions: {
+    required: true, 
+    type: []
+  }
 
     },
   setup(props) {
