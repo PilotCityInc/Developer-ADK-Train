@@ -8,7 +8,11 @@
           <div class="module-edit__required">Required</div> -->
         </div>
 
-        <div v-for="(i, index) in train" :key="index" class="module-edit__inputs">
+        <div
+          v-for="(i, index) in programDoc.data.adks[index].train"
+          :key="index"
+          class="module-edit__inputs"
+        >
           <div class="module-edit__inputs-video">
             <validation-provider v-slot="{ errors }" slim rules="required">
               <v-text-field v-model="i.name" :error-messages="errors" label="Video Name" outlined>
@@ -151,50 +155,75 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api';
+import { computed, defineComponent, reactive, ref, toRefs } from '@vue/composition-api';
 
 export default defineComponent({
   name: 'ModuleSetup',
-  data() {
-    return {
+  props: {
+    value: {
+      required: true,
+      type: Object as PropType<MongoDoc>
+    }
+  },
+
+  setup(props, ctx) {
+    const programDoc = computed({
+      get: () => props.value,
+      set: newVal => {
+        ctx.emit('input', newVal);
+      }
+    });
+
+    const index = programDoc.value.data.adks.findIndex(function findResearchObj(obj) {
+      return obj.name === 'train';
+    });
+    const initTrainSetup = {
       train: [
         {
-          visionVideo: '',
-          visionLink: '',
-          productVideo: '',
-          productLink: '',
-          industryVideo: '',
-          industryLink: ''
+          name: '',
+          link: '',
+          required: false
         }
       ]
     };
-  },
-  methods: {
-    populate() {
-      const train1 = {
+
+    programDoc.value.data.adks[index] = {
+      ...initTrainSetup,
+      ...programDoc.value.data.adks[index]
+    };
+    // Handle Save
+    const loading = ref(false);
+    const errormsg = ref('');
+    async function save() {
+      loading.value = true;
+      try {
+        await programDoc.value.save();
+        errormsg.value = '';
+      } catch (err) {
+        errormsg.value = 'Could not save';
+      }
+      loading.value = false;
+    }
+
+    function populate() {
+      const train1 = ref({
         name: '',
         link: '',
         required: false
-      };
-      this.train.push(train1);
+      });
+
+      programDoc.value.data.adks[index].train.push(train1.value);
     }
+
+    return {
+      populate,
+      loading,
+      save,
+      errormsg,
+      index,
+      programDoc
+    };
   }
-  // setup() {
-  //   const setupInstructions = ref(['']);
-  //   const setup = reactive({
-  //     visionVideo: '',
-  //     visionLink: '',
-  //     productVideo: '',
-  //     productLink: '',
-  //     industryVideo: '',
-  //     industryLink: ''
-  //   });
-  //   // const setup = reactive({});
-  //   return {
-  //     setupInstructions,
-  //     ...toRefs(setup)
-  //   };
-  // }
 });
 </script>
 

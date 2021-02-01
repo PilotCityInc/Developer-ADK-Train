@@ -13,9 +13,10 @@
 
         <validation-provider v-slot="{ errors }" slim rules="required">
           <v-select
-            v-model="groupActivity"
+            v-model="programDoc.data.adks[index].defaultActivity.groupActivity"
             :error-messages="errors"
             :items="group"
+            disabled
             label="What activity group does this belong to?"
             outlined
           ></v-select>
@@ -23,9 +24,10 @@
 
         <validation-provider v-slot="{ errors }" slim rules="required">
           <v-select
-            v-model="requiredActivity"
+            v-model="programDoc.data.adks[index].defaultActivity.requiredActivity"
             :error-messages="errors"
             :items="required"
+            disabled
             label="Is this activity required for participants to complete?"
             outlined
           ></v-select>
@@ -38,9 +40,10 @@
       ></v-select> -->
         <validation-provider v-slot="{ errors }" slim rules="required">
           <v-select
-            v-model="deliverableActivity"
+            v-model="programDoc.data.adks[index].defaultActivity.deliverableActivity"
             :error-messages="errors"
             :items="deliverable"
+            disabled
             label="Is this a deliverable?"
             outlined
           ></v-select>
@@ -52,9 +55,10 @@
       ></v-select> -->
         <validation-provider v-slot="{ errors }" slim rules="required">
           <v-select
-            v-model="endEarlyActivity"
+            v-model="programDoc.data.adks[index].defaultActivity.endEarlyActivity"
             :error-messages="errors"
             :items="endEarly"
+            disabled
             label="Allow participants to end program early after completion of this activity?"
             outlined
           ></v-select>
@@ -90,7 +94,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent, reactive, ref, toRefs, computed } from '@vue/composition-api';
 import Instruct from './ModuleInstruct.vue';
 import {
   group,
@@ -108,59 +112,77 @@ export default defineComponent({
   components: {
     Instruct
   },
-  data() {
-    return {
+  props: {
+    value: {
+      required: true,
+      type: Object as PropType<MongoDoc>
+    }
+  },
+
+  setup(props, ctx) {
+    const programDoc = computed({
+      get: () => props.value,
+      set: newVal => {
+        ctx.emit('input', newVal);
+      }
+    });
+
+    const index = programDoc.value.data.adks.findIndex(function findResearchObj(obj) {
+      return obj.name === 'train';
+    });
+
+    const initTrainPresets = {
+      defaultActivity: {
+        groupActivity: 'Project',
+        requiredActivity: 'Yes',
+        deliverableActivity: 'No',
+        endEarlyActivity: 'No',
+        required: false
+      }
+    };
+
+    programDoc.value.data.adks[index] = {
+      ...initTrainPresets,
+      ...programDoc.value.data.adks[index]
+    };
+
+    // Handle Save
+    const loading = ref(false);
+    const errormsg = ref('');
+    async function save() {
+      loading.value = true;
+      try {
+        await programDoc.value.save();
+        errormsg.value = '';
+      } catch (err) {
+        errormsg.value = 'Could not save';
+      }
+      loading.value = false;
+    }
+    const presets = reactive({
       group,
       required,
       lockOrder,
       deliverable,
       notifications,
       accessibility,
-      endEarly,
-      minutes: '',
-      groupActivity: '',
-      requiredActivity: '',
-      lockOrderActivity: '',
-      deliverableActivity: '',
-      notificationsActivity: '',
-      accessibilityActivity: '',
-      endEarlyActivity: '',
-      setupInstructions: {
-        description: '',
-        instructions: ['', '', '']
-      }
+      endEarly
+    });
+
+    const setupInstructions = ref({
+      description: '',
+      instructions: ['', '', '']
+    });
+    return {
+      ...toRefs(presets),
+      setupInstructions,
+      loading,
+      save,
+      errormsg,
+      index,
+      programDoc
     };
   }
-  // setup() {
-  //   const presets = reactive({
-  //     group,
-  //     required,
-  //     lockOrder,
-  //     deliverable,
-  //     notifications,
-  //     accessibility,
-  //     endEarly
-  //   });
-  //   const defaultActivity = reactive({
-  //     minutes: '',
-  //     groupActivity: '',
-  //     requiredActivity: '',
-  //     lockOrderActivity: '',
-  //     deliverableActivity: '',
-  //     notificationsActivity: '',
-  //     accessibilityActivity: '',
-  //     endEarlyActivity: ''
-  //   });
-  //   const setupInstructions = ref({
-  //     description: '',
-  //     instructions: ['', '', '']
-  //   });
-  //   return {
-  //     ...toRefs(presets),
-  //     setupInstructions,
-  //     ...toRefs(defaultActivity)
-  //   };
-  // }
 });
 </script>
 

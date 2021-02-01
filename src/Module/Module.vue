@@ -100,7 +100,7 @@
         </div>
         <div class="module__page">
           <keep-alive>
-            <component :is="getComponent" />
+            <component :is="getComponent" v-model="programDoc" />
           </keep-alive>
         </div>
       </div>
@@ -263,6 +263,7 @@ import { computed, reactive, ref, toRefs, defineComponent, PropType } from '@vue
 import '../styles/module.scss';
 import { Collection } from 'mongodb';
 import * as Module from './components';
+import MongoDoc from './types';
 
 export default defineComponent({
   name: 'ModuleName',
@@ -273,69 +274,32 @@ export default defineComponent({
     'module-preview': Module.Default
   },
   props: {
-    // programCollection: {
-    //   required: true,
-    //   type: Object as PropType<Collection>
-    // },
-    // programId: {
-    //   required: true,
-    //   type: String
-    // },
-    // visionName: {
-    //   required: true,
-    //   type: String
-    // },
-    // visionLink: {
-    //   required: true,
-    //   type: String
-    // },
-    // productName: {
-    //   required: true,
-    //   type: String
-    // },
-    // industryName: {
-    //   required: true,
-    //   type: String
-    // },
-    // industryLink: {
-    //   required: true,
-    //   type: String
-    // },
-    // trainGoal: {
-    //   required: true,
-    //   type: String
-    // },
-    // trainInstructions: {
-    //   required: true,
-    //   type: []
-    // }
+    value: {
+      required: true,
+      type: Object as PropType<MongoDoc>
+    }
   },
-  setup() // props
-  {
-    // const programDoc = props.programCollection.findOne(
-    //   {
-    //     _id: props.programId
-    //   },
-    //   { projection: { adks: 1 } }
-    // );
+  setup(
+    props,
+    ctx // props
+  ) {
+    // ProgramData Logic
+    const programDoc = computed({
+      get: () => props.value,
+      set: newVal => {
+        ctx.emit('input', newVal);
+      }
+    });
 
-    // const visionName = ref('');
-    // const visionLink = ref('');
-    // const productName = ref('');
-    // const industryName = ref('');
-    // const industryLink = ref('');
-    // const trainGoal = ref('');
-    // const trainInstructions = ref('');
-
-    // const trainData = programDoc.adks.find(adk => adk.name === 'train');
-    // visionName.value = trainData.visionName;
-    // visionLink.value = trainData.visionLink;
-    // productName.value = trainData.productName;
-    // industryName.value = trainData.industryName;
-    // industryLink.value = trainData.industryLink;
-    // trainGoal.value = trainData.trainGoal;
-    // trainInstructions.value = trainData.trainInstructions;
-
+    const index = programDoc.value.data.adks.findIndex(function findResearchObj(obj) {
+      return obj.name === 'train';
+    });
+    if (index === -1) {
+      const initTrain = {
+        name: 'train'
+      };
+      programDoc.value.data.adks.push(initTrain);
+    }
     // ENTER ACTIVITY NAME BELOW
     const moduleName = ref('Train');
     const page = reactive({
@@ -399,7 +363,8 @@ export default defineComponent({
       getColor,
       ...toRefs(timelineData),
       timeline,
-      comment
+      comment,
+      programDoc
     };
   }
 });
