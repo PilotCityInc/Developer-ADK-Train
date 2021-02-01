@@ -1,5 +1,6 @@
 <template>
-  <ValidationObserver v-slot="{ invalid }" slim>
+  <ValidationObserver v-slot="{}" slim>
+    <!-- <ValidationObserver v-slot="{ invalid }" slim> -->
     <!--  TODO: make the inputs into actual components -->
     <v-container class="module-instruct">
       <div class="module-instruct__container">
@@ -13,7 +14,11 @@
             row-height="3"
             rows="3"
             outlined
-            class="font-weight-black text-body-1"
+            class="font-weight-bold text-body-1"
+            hide-details
+            dense
+            auto-grow
+            disabled
           ></v-textarea>
         </div>
         <div class="module-instruct__instructions">
@@ -27,7 +32,8 @@
           >
             <v-avatar
               size="35"
-              class="module-instruct__instructions-av font-weight-black text-caption d-none d-sm-flex"
+              color="white"
+              class="module-instruct__instructions-av font-weight-bold text-caption d-none d-sm-flex"
             >
               {{ index + 1 }}
             </v-avatar>
@@ -38,23 +44,28 @@
                 row-height="3"
                 rows="1"
                 outlined
+                hide-details
+                dense
                 :error-messages="errors"
-                class="font-weight-black text-body-1"
+                class="font-weight-bold text-body-1"
+                auto-grow
+                disabled
               ></v-textarea>
             </validation-provider>
           </div>
 
-          <div>
+          <!-- <div>
             <v-btn
               class="module-instruct__instructions-add font-weight-black text-body-1"
               depressed
+              color="white"
               :disabled="invalid"
               :ripple="false"
               @click="populate()"
             >
               <v-icon class="module-instruct__instructions-add-icon"> mdi-plus </v-icon>
             </v-btn>
-          </div>
+          </div> -->
         </div>
       </div>
     </v-container>
