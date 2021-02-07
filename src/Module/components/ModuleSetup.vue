@@ -1,16 +1,15 @@
 <template>
   <ValidationObserver v-slot="{ invalid }" slim>
     <v-container class="module-edit">
-      <div class="module-edit__body">
+      <div :ref="body" class="module-edit__body">
         <div class="module-edit__container">
           <!-- <div class="module-edit__video">Name</div>
           <div class="module-edit__link">Link</div>
           <div class="module-edit__required">Required</div> -->
         </div>
-
         <div
-          v-for="(i, index) in programDoc.data.adks[index].train"
-          :key="index"
+          v-for="(i, linkIndex) in programDoc.data.adks[index].videoLinks"
+          :key="linkIndex"
           class="module-edit__inputs"
         >
           <div class="module-edit__inputs-video">
@@ -38,7 +37,9 @@
           </div>
           <div class="module-edit__inputs-required">
             <!-- <v-checkbox v-model="i.required"></v-checkbox> -->
-            <v-btn x-large outlined>Delete</v-btn>
+            <v-btn :disabled="linkIndex == 0" x-large outlined @click="removeIndex(linkIndex)"
+              >Delete</v-btn
+            >
           </div>
         </div>
 
@@ -156,13 +157,14 @@
 
 <script lang="ts">
 import { computed, defineComponent, reactive, ref, toRefs } from '@vue/composition-api';
+import MongoDoc from '../types';
 
 export default defineComponent({
   name: 'ModuleSetup',
   props: {
     value: {
       required: true,
-      type: Object as PropType<MongoDoc>
+      type: Object as () => MongoDoc
     }
   },
 
@@ -174,23 +176,40 @@ export default defineComponent({
       }
     });
 
-    const index = programDoc.value.data.adks.findIndex(function findResearchObj(obj) {
+    let index = programDoc.value.data.adks.findIndex(function findResearchObj(obj) {
       return obj.name === 'train';
     });
+    if (index === -1)
+      index =
+        programDoc.value.data.adks.push({
+          name: 'train'
+        }) - 1;
     const initTrainSetup = {
-      train: [
+      videoLinks: [
         {
           name: '',
-          link: '',
-          required: false
+          link: ''
         }
       ]
     };
-
     programDoc.value.data.adks[index] = {
       ...initTrainSetup,
       ...programDoc.value.data.adks[index]
     };
+    // Reactivity Handling
+    const body = ref(0);
+    function populate() {
+      const train1 = ref({
+        name: '',
+        link: ''
+      });
+      programDoc.value.data.adks[index].videoLinks.push(train1.value);
+      body.value += 1;
+    }
+    function removeIndex(linkIndex: number) {
+      programDoc.value.data.adks[index].videoLinks.splice(linkIndex, 1);
+      body.value += 1;
+    }
     // Handle Save
     const loading = ref(false);
     const errormsg = ref('');
@@ -205,23 +224,15 @@ export default defineComponent({
       loading.value = false;
     }
 
-    function populate() {
-      const train1 = ref({
-        name: '',
-        link: '',
-        required: false
-      });
-
-      programDoc.value.data.adks[index].train.push(train1.value);
-    }
-
     return {
       populate,
       loading,
       save,
       errormsg,
       index,
-      programDoc
+      programDoc,
+      body,
+      removeIndex
     };
   }
 });

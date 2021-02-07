@@ -95,6 +95,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref, toRefs, computed } from '@vue/composition-api';
+import { PropType } from 'vue';
 import Instruct from './ModuleInstruct.vue';
 import {
   group,
@@ -105,6 +106,7 @@ import {
   accessibility,
   endEarly
 } from './const';
+import MongoDoc from '../types';
 // import gql from 'graphql-tag';
 
 export default defineComponent({
@@ -115,10 +117,9 @@ export default defineComponent({
   props: {
     value: {
       required: true,
-      type: Object as PropType<MongoDoc>
+      type: Object as () => MongoDoc
     }
   },
-
   setup(props, ctx) {
     const programDoc = computed({
       get: () => props.value,
