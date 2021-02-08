@@ -78,8 +78,13 @@ import { ref } from '@vue/composition-api';
 export default {
   name: 'ModuleInstruct',
   setup() {
-    const trainInstructions = ref(['']);
-    const goal = ref(['']);
+    const trainInstructions = ref([
+      'Watch one video after another',
+      'Digest, take notes and repeat until complete'
+    ]);
+    const goal = ref([
+      'To watch, learn and understand the details of your employer, their project scope and industry'
+    ]);
     function populate() {
       trainInstructions.value.push('');
     }

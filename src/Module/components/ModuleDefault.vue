@@ -44,13 +44,13 @@
     <div class="module-edit__container">
       <v-expansion-panels class="module-default__playlist">
         <v-expansion-panel v-for="(linkObj, index) in trainData.videoLinks" :key="index">
-          <v-expansion-panel-header disable-icon-rotate>
+          <v-expansion-panel-header disable-icon-rotate class="module-default__video-title">
             {{ linkObj.name }}
           </v-expansion-panel-header>
           <v-expansion-panel-content>
             <iframe
-              width="560"
-              height="315"
+              width="100%"
+              height="315px"
               :src="`https://www.youtube.com/embed/${getYoutubeId(linkObj.link)}`"
               frameborder="0"
               allow="autoplay; encrypted-media"
@@ -112,7 +112,16 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+.v-expansion-panel-content__wrap {
+  // padding: 0px !important;
+}
 .module-default {
+  &__video-title {
+    font-weight: 800;
+    line-height: 25px !important;
+    font-size: 16px !important;
+    color: #404142;
+  }
   &__none {
     border-radius: 5px;
     // border: 1px solid #dedede;

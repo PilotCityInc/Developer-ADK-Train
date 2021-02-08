@@ -56,6 +56,8 @@
             <v-icon class="module-edit__add-icon"> mdi-plus </v-icon>
           </v-btn>
         </div>
+
+        <div><v-btn class="mt-12" x-large outlined depressed>Save</v-btn></div>
       </div>
 
       <!-- <div class="module-edit__container">
