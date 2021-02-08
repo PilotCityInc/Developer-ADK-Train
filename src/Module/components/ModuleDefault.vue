@@ -43,22 +43,20 @@
     />
     <div class="module-edit__container">
       <v-expansion-panels class="module-default__playlist">
-        <v-expansion-panel>
+        <v-expansion-panel v-for="(linkObj, index) in trainData.videoLinks" :key="index">
           <v-expansion-panel-header disable-icon-rotate>
-            Vision Podcast
-            <template v-slot:actions>
-              <v-icon color="teal">mdi-check</v-icon>
-            </template>
+            {{ linkObj.name }}
           </v-expansion-panel-header>
-          <v-expansion-panel-content></v-expansion-panel-content>
-        </v-expansion-panel>
-        <v-expansion-panel>
-          <v-expansion-panel-header>Product Demonstration</v-expansion-panel-header>
-          <v-expansion-panel-content></v-expansion-panel-content>
-        </v-expansion-panel>
-        <v-expansion-panel>
-          <v-expansion-panel-header>Industry Panel</v-expansion-panel-header>
-          <v-expansion-panel-content></v-expansion-panel-content>
+          <v-expansion-panel-content>
+            <iframe
+              width="560"
+              height="315"
+              :src="`https://www.youtube.com/embed/${getYoutubeId(linkObj.link)}`"
+              frameborder="0"
+              allow="autoplay; encrypted-media"
+              allowfullscreen
+            ></iframe>
+          </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
     </div>
@@ -69,27 +67,48 @@
 </template>
 
 <script lang="ts">
-import { ref } from '@vue/composition-api';
+import { computed, defineComponent, ref } from '@vue/composition-api';
+import MongoDoc from '../types';
 import Instruct from './ModuleInstruct.vue';
 
-export default {
+export default defineComponent({
   name: 'ModuleDefault',
   components: {
     Instruct
   },
-  apollo: {},
-  data() {
+  props: {
+    value: {
+      required: true,
+      type: Object as () => MongoDoc
+    }
+  },
+  setup(props, ctx) {
+    const programDoc = computed({
+      get: () => props.value,
+      set: newVal => {
+        ctx.emit('input', newVal);
+      }
+    });
+    const trainData = computed(() => programDoc.value.data.adks.find(adk => adk.name === 'train'));
     const setupInstructions = ref({
       description: '',
       instructions: ['', '', '']
     });
     const showInstructions = ref(true);
+    function getYoutubeId(url: string) {
+      const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+      const match = url.match(regExp);
+      return match && match[7].length === 11 ? match[7] : false;
+    }
     return {
       setupInstructions,
-      showInstructions
+      showInstructions,
+      programDoc,
+      trainData,
+      getYoutubeId
     };
   }
-};
+});
 </script>
 
 <style lang="scss">

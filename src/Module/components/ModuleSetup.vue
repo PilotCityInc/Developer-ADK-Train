@@ -156,7 +156,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, ref, toRefs } from '@vue/composition-api';
+import { computed, defineComponent, ref } from '@vue/composition-api';
 import MongoDoc from '../types';
 
 export default defineComponent({
