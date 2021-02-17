@@ -60,9 +60,17 @@
             allow="autoplay; encrypted-media"
             allowfullscreen
           ></iframe>
-          <!-- <div class="d-flex justify-center mt-2 mb-4">
-            <v-btn depressed outlined x-small>Subscribe PilotCity YouTube</v-btn>
-          </div> -->
+          <div class="d-flex justify-center mt-2 mb-4">
+            <v-btn
+              depressed
+              outlined
+              x-small
+              a
+              href="https://www.youtube.com/channel/UCNQZIRiTx54gNzMji3iHgJg"
+              target="_blank"
+              >Subscribe to PilotCity YouTube</v-btn
+            >
+          </div>
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
