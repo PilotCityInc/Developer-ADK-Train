@@ -41,25 +41,32 @@
       buffer-value="100"
       stream
     />
-    <div class="module-edit__container">
-      <v-expansion-panels class="module-default__playlist">
-        <v-expansion-panel v-for="(linkObj, index) in trainData.videoLinks" :key="index">
-          <v-expansion-panel-header disable-icon-rotate class="module-default__video-title">
-            {{ linkObj.name }}
-          </v-expansion-panel-header>
-          <v-expansion-panel-content>
-            <iframe
-              width="100%"
-              height="315px"
-              :src="`https://www.youtube.com/embed/${getYoutubeId(linkObj.link)}`"
-              frameborder="0"
-              allow="autoplay; encrypted-media"
-              allowfullscreen
-            ></iframe>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-      </v-expansion-panels>
-    </div>
+
+    <v-expansion-panels tile accordion flat class="module-default__playlist">
+      <v-expansion-panel
+        v-for="(linkObj, index) in trainData.videoLinks"
+        :key="index"
+        class="module-default__playlist-panel"
+      >
+        <v-expansion-panel-header disable-icon-rotate class="module-default__video-title">
+          {{ linkObj.name }}
+        </v-expansion-panel-header>
+        <v-expansion-panel-content class="module-default__video-content-panel">
+          <iframe
+            width="100%"
+            height="380px"
+            :src="`https://www.youtube.com/embed/${getYoutubeId(linkObj.link)}`"
+            frameborder="0"
+            allow="autoplay; encrypted-media"
+            allowfullscreen
+          ></iframe>
+          <!-- <div class="d-flex justify-center mt-2 mb-4">
+            <v-btn depressed outlined x-small>Subscribe PilotCity YouTube</v-btn>
+          </div> -->
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
+
     <br />
     <br />
     <div><v-btn x-large outlined depressed>Finish</v-btn></div>
@@ -136,7 +143,7 @@ export default defineComponent({
 
   &__collapse-divider {
     margin-top: 15px;
-    margin-bottom: 75px;
+    // margin-bottom: 75px;
     margin-right: none;
     margin-left: none;
     padding-right: none;
@@ -160,5 +167,16 @@ export default defineComponent({
   &__playlist {
     width: 100%;
   }
+
+  &__playlist-panel {
+    border-bottom: 1px solid #dedede;
+  }
+
+  &__video-content-panel {
+  }
+}
+
+.v-expansion-panel-content__wrap {
+  padding: 0px !important;
 }
 </style>
