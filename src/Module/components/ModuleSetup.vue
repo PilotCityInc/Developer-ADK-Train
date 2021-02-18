@@ -57,108 +57,22 @@
           </v-btn>
         </div>
 
-        <div><v-btn class="mt-12" x-large outlined depressed>Save</v-btn></div>
+        <div>
+          <v-btn class="mt-12" x-large outlined depressed :loading="loading" @click="process()"
+            >Save</v-btn
+          >
+        </div>
+        <v-alert v-if="success || error" :type="success ? 'success' : 'error'">{{
+          message
+        }}</v-alert>
       </div>
-
-      <!-- <div class="module-edit__container">
-        <v-expansion-panels class="module-default__playlist">
-          <v-expansion-panel>
-            <v-expansion-panel-header disable-icon-rotate>
-              Vision Podcast
-              <template v-slot:actions>
-                <v-icon color="teal">mdi-check</v-icon>
-              </template>
-            </v-expansion-panel-header>
-            <v-expansion-panel-content>
-              <div class="module-setup__two-column">
-                <div class="module-setup__left-column">
-                  <validation-provider v-slot="{ errors }" slim rules="required">
-                    <v-text-field
-                      v-model="visionVideo"
-                      :error-messages="errors"
-                      outlined
-                      label="Video Name"
-                    ></v-text-field>
-                  </validation-provider>
-                </div>
-                <div class="module-setup__right-column">
-                  <validation-provider v-slot="{ errors }" slim rules="required">
-                    <v-text-field
-                      v-model="visionLink"
-                      :error-messages="errors"
-                      outlined
-                      label="Link"
-                    ></v-text-field>
-                  </validation-provider>
-                </div>
-              </div>
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-          <v-expansion-panel>
-            <v-expansion-panel-header>Product Demonstration</v-expansion-panel-header>
-            <v-expansion-panel-content>
-              <div class="module-setup__two-column">
-                <div class="module-setup__left-column">
-                  <validation-provider v-slot="{ errors }" slim rules="required">
-                    <v-text-field
-                      v-model="productVideo"
-                      outlined
-                      :error-messages="errors"
-                      label="Video Name"
-                    ></v-text-field>
-                  </validation-provider>
-                </div>
-                <div class="module-setup__right-column">
-                  <validation-provider v-slot="{ errors }" slim rules="required">
-                    <v-text-field
-                      v-model="productLink"
-                      :error-messages="errors"
-                      outlined
-                      label="Link"
-                    ></v-text-field>
-                  </validation-provider>
-                </div>
-              </div>
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-          <v-expansion-panel>
-            <v-expansion-panel-header>Industry Panel</v-expansion-panel-header>
-            <v-expansion-panel-content>
-              <div class="module-setup__two-column">
-                <div class="module-setup__left-column">
-                  <validation-provider v-slot="{ errors }" slim rules="required">
-                    <v-text-field
-                      v-model="industryVideo"
-                      :error-messages="errors"
-                      outlined
-                      label="Video Name"
-                    ></v-text-field>
-                  </validation-provider>
-                </div>
-                <div class="module-setup__right-column">
-                  <validation-provider v-slot="{ errors }" slim rules="required">
-                    <v-text-field
-                      v-model="industryLink"
-                      :error-messages="errors"
-                      outlined
-                      label="Link"
-                    ></v-text-field>
-                  </validation-provider>
-                </div>
-              </div>
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-        </v-expansion-panels>
-        <br />
-        <br />
-        <v-btn x-large outlined :disabled="invalid" depressed>Save</v-btn>
-      </div> -->
     </v-container>
   </ValidationObserver>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, ref } from '@vue/composition-api';
+import { createLoader, getModAdk } from 'pcv4lib/src';
 import MongoDoc from '../types';
 
 export default defineComponent({
@@ -213,28 +127,14 @@ export default defineComponent({
       body.value += 1;
     }
     // Handle Save
-    const loading = ref(false);
-    const errormsg = ref('');
-    async function save() {
-      loading.value = true;
-      try {
-        await programDoc.value.save();
-        errormsg.value = '';
-      } catch (err) {
-        errormsg.value = 'Could not save';
-      }
-      loading.value = false;
-    }
 
     return {
       populate,
-      loading,
-      save,
-      errormsg,
       index,
       programDoc,
       body,
-      removeIndex
+      removeIndex,
+      ...createLoader(programDoc.value.save, 'Saved Successfully', 'Could not save at this time')
     };
   }
 });

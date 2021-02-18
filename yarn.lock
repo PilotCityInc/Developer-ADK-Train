@@ -13056,6 +13056,11 @@ pbkdf2@^3.0.3:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
+pcv4lib@^1.0.8:
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/pcv4lib/-/pcv4lib-1.0.9.tgz#13bda51d1393b5d6285dd6589ed38aa45621bfe5"
+  integrity sha512-DZFN2QOFYo8iNGlzveq5aeSwYFEylGn3zosW3gBk4BLqprAQodaONJST8slylw5v7Pk0b4ZOifWTadS0AwfRcA==
+
 pend@~1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/pend/-/pend-1.2.0.tgz#7a57eb550a6783f9115331fcf4663d5c8e007a50"
