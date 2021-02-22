@@ -95,7 +95,6 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref, toRefs, computed } from '@vue/composition-api';
-import { PropType } from 'vue';
 import Instruct from './ModuleInstruct.vue';
 import {
   group,
