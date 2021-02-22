@@ -72,7 +72,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from '@vue/composition-api';
-import { createLoader, getModAdk } from 'pcv4lib/src';
+import { createLoader } from 'pcv4lib/src';
 import MongoDoc from '../types';
 
 export default defineComponent({
@@ -134,7 +134,7 @@ export default defineComponent({
       programDoc,
       body,
       removeIndex,
-      ...createLoader(programDoc.value.save, 'Saved Successfully', 'Could not save at this time')
+      ...createLoader(programDoc.value.update, 'Saved Successfully', 'Could not save at this time')
     };
   }
 });

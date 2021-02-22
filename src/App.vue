@@ -21,7 +21,7 @@ export default defineComponent({
       data: {
         adks: []
       },
-      save: () => {
+      update: () => {
         return new Promise((resolve, reject) => {
           setTimeout(() => {
             // resolve(true);
