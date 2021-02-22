@@ -101,9 +101,7 @@
           </div>
         </div>
         <div class="module__page">
-          <keep-alive>
-            <component :is="getComponent" v-model="programDoc" />
-          </keep-alive>
+          <component :is="getComponent" v-model="programDoc" />
         </div>
       </div>
     </div>

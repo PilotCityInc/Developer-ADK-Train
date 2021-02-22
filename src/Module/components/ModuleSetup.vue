@@ -14,7 +14,13 @@
         >
           <div class="module-edit__inputs-video">
             <validation-provider v-slot="{ errors }" slim rules="required">
-              <v-text-field v-model="i.name" :error-messages="errors" label="Video Name" outlined>
+              <v-text-field
+                v-model="i.name"
+                rounded
+                :error-messages="errors"
+                label="Video Name"
+                outlined
+              >
               </v-text-field>
               <!-- <div>{{ i.name }}</div> -->
             </validation-provider>
@@ -29,6 +35,7 @@
             >
               <v-text-field
                 v-model="i.link"
+                rounded
                 label="Video Link"
                 :error-messages="errors"
                 outlined
@@ -37,7 +44,12 @@
           </div>
           <div class="module-edit__inputs-required">
             <!-- <v-checkbox v-model="i.required"></v-checkbox> -->
-            <v-btn :disabled="linkIndex == 0" x-large outlined @click="removeIndex(linkIndex)"
+            <v-btn
+              rounded
+              :disabled="linkIndex == 0"
+              x-large
+              outlined
+              @click="removeIndex(linkIndex)"
               >Delete</v-btn
             >
           </div>
@@ -45,6 +57,7 @@
 
         <div class="module-edit__add">
           <v-btn
+            rounded
             x-large
             class="module-edit__add-button"
             depressed
@@ -58,7 +71,14 @@
         </div>
 
         <div>
-          <v-btn class="mt-12" x-large outlined depressed :loading="loading" @click="process()"
+          <v-btn
+            class="mt-12"
+            x-large
+            outlined
+            :disabled="invalid"
+            depressed
+            :loading="loading"
+            @click="process()"
             >Save</v-btn
           >
         </div>
