@@ -1,5 +1,5 @@
 <template>
-  <v-container class="module-default pa-0 mt-0">
+  <div class="module-default pa-0 mt-0">
     <div class="module-default__instructions">
       <v-expansion-panels v-model="showInstructions" class="module-default__instructions" flat>
         <v-expansion-panel>
@@ -78,7 +78,7 @@
     <br />
     <br />
     <div><v-btn x-large outlined depressed>Finish</v-btn></div>
-  </v-container>
+  </div>
 </template>
 
 <script lang="ts">
