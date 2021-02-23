@@ -1,5 +1,5 @@
 <template>
-  <div class="module-default pa-0 mt-0">
+  <div class="module-default">
     <div class="module-default__instructions">
       <v-expansion-panels v-model="showInstructions" class="module-default__instructions" flat>
         <v-expansion-panel>
@@ -152,7 +152,6 @@ export default defineComponent({
   &__collapse-divider {
     margin-top: 15px;
     // margin-bottom: 75px;
-
     margin-bottom: none !important;
     margin-right: none;
     margin-left: none;
