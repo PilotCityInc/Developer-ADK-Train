@@ -82,7 +82,7 @@
             >Save</v-btn
           >
         </div>
-        <v-alert v-if="success || error" :type="success ? 'success' : 'error'">{{
+        <v-alert v-if="success || error" class="mt-3" :type="success ? 'success' : 'error'">{{
           message
         }}</v-alert>
       </div>
@@ -154,7 +154,7 @@ export default defineComponent({
       programDoc,
       body,
       removeIndex,
-      ...createLoader(programDoc.value.update, 'Saved Successfully', 'Could not save at this time')
+      ...createLoader(programDoc.value.update, 'Saved', 'Something went wrong, try again later')
     };
   }
 });
