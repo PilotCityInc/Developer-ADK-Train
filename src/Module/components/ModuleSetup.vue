@@ -34,7 +34,7 @@
               }"
             >
               <v-text-field
-                v-model="i.link"
+                v-model.trim="i.link"
                 rounded
                 label="Video Link"
                 :error-messages="errors"

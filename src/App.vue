@@ -24,8 +24,8 @@ export default defineComponent({
       update: () => {
         return new Promise((resolve, reject) => {
           setTimeout(() => {
-            // resolve(true);
-            reject(new Error('REJECTED'));
+            resolve(true);
+            // reject(new Error('REJECTED'));
           }, 3000);
         });
       },
