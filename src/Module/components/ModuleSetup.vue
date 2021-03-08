@@ -92,7 +92,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from '@vue/composition-api';
-import { createLoader } from 'pcv4lib/src';
+import { loading } from 'pcv4lib/src';
 import MongoDoc from '../types';
 
 export default defineComponent({
@@ -154,7 +154,7 @@ export default defineComponent({
       programDoc,
       body,
       removeIndex,
-      ...createLoader(programDoc.value.update, 'Saved', 'Something went wrong, try again later')
+      ...loading(programDoc.value.update, 'Saved', 'Something went wrong, try again later')
     };
   }
 });
