@@ -125,7 +125,9 @@ export default defineComponent({
       videoLinks: [
         {
           name: '',
-          link: ''
+          link: '',
+          finished: false,
+          disabled: false
         }
       ]
     };
@@ -138,7 +140,9 @@ export default defineComponent({
     function populate() {
       const train1 = ref({
         name: '',
-        link: ''
+        link: '',
+        finished: false,
+        disabled: true
       });
       programDoc.value.data.adks[index].videoLinks.push(train1.value);
       body.value += 1;
