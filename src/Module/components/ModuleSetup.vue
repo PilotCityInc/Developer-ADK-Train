@@ -72,8 +72,9 @@
 
         <div>
           <v-btn
-            class="mt-12"
+            class="mt-12 pl-12 pr-12"
             x-large
+            rounded
             outlined
             :disabled="invalid"
             depressed

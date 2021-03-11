@@ -77,7 +77,9 @@
 
     <br />
     <br />
-    <div class="d-flex justify-center"><v-btn x-large outlined depressed>Finish</v-btn></div>
+    <div class="d-flex justify-center">
+      <v-btn x-large rounded outlined depressed>Finish</v-btn>
+    </div>
   </div>
 </template>
 
