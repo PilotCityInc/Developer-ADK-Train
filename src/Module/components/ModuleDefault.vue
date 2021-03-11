@@ -47,9 +47,23 @@
         v-for="(linkObj, index) in trainData.videoLinks"
         :key="index"
         class="module-default__playlist-panel"
+        :disabled="linkObj.disabled"
       >
-        <v-expansion-panel-header disable-icon-rotate class="module-default__video-title">
+        <v-expansion-panel-header
+          :class="{ 'grey--text text--lighten-2': linkObj.disabled === true }"
+          disable-icon-rotate
+          class="module-default__video-title"
+        >
           {{ linkObj.name }}
+          <template v-slot:actions>
+            <v-icon v-if="linkObj.finished == false && linkObj.disabled == false" color="warning">
+              mdi-alert-circle
+            </v-icon>
+            <v-icon v-if="linkObj.finished" color="teal">mdi-check</v-icon>
+          </template>
+          <v-icon v-if="linkObj.disabled" style="position: absolute; right: 24px" color="error">
+            mdi-lock-outline
+          </v-icon>
         </v-expansion-panel-header>
         <v-expansion-panel-content class="module-default__video-content-panel">
           <iframe
@@ -60,6 +74,15 @@
             allow="autoplay; encrypted-media"
             allowfullscreen
           ></iframe>
+          <div class="d-flex justify-center">
+            <v-checkbox
+              v-model="trainData.videoLinks[index].finished"
+              :v-model="linkObj"
+              label="Have you finished the video?"
+              @click="videoComplete(index)"
+            >
+            </v-checkbox>
+          </div>
           <div class="d-flex justify-center mt-2 mb-4">
             <v-btn
               depressed
@@ -77,7 +100,9 @@
 
     <br />
     <br />
-    <div class="d-flex justify-center"><v-btn x-large outlined depressed>Finish</v-btn></div>
+    <div class="d-flex justify-center">
+      <v-btn :disabled="finishButtonDisabled === 1" x-large outlined depressed>Finish</v-btn>
+    </div>
   </div>
 </template>
 
@@ -110,17 +135,37 @@ export default defineComponent({
       instructions: ['', '', '']
     });
     const showInstructions = ref(true);
+    const finishButtonDisabled = ref(1);
+    function videoComplete(index: number) {
+      if (trainData.value.videoLinks[index + 1]) {
+        trainData.value.videoLinks[index + 1].disabled = !trainData.value.videoLinks[index + 1]
+          .disabled;
+      }
+      if (!trainData.value.videoLinks[index].finished && trainData.value.videoLinks[index + 1]) {
+        for (let i = 1; i < trainData.value.videoLinks.length; i += 1) {
+          trainData.value.videoLinks[index + i].disabled = true;
+        }
+      }
+      const lastVideoLink = trainData.value.videoLinks[trainData.value.videoLinks.length - 1];
+      if (lastVideoLink.finished && !lastVideoLink.disabled) {
+        finishButtonDisabled.value = 0;
+      } else {
+        finishButtonDisabled.value = 1;
+      }
+    }
     function getYoutubeId(url: string) {
       const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
       const match = url.match(regExp);
       return match && match[7].length === 11 ? match[7] : false;
     }
     return {
+      finishButtonDisabled,
       setupInstructions,
       showInstructions,
       programDoc,
       trainData,
-      getYoutubeId
+      getYoutubeId,
+      videoComplete
     };
   }
 });
