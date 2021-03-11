@@ -142,8 +142,9 @@ export default defineComponent({
           .disabled;
       }
       if (!trainData.value.videoLinks[index].finished && trainData.value.videoLinks[index + 1]) {
-        for (let i = 1; i < trainData.value.videoLinks.length; i += 1) {
-          trainData.value.videoLinks[index + i].disabled = true;
+        for (let i = index; i < trainData.value.videoLinks.length - 1; i += 1) {
+          trainData.value.videoLinks[i + 1].disabled = true;
+          finishButtonDisabled.value = 1;
         }
       }
       const lastVideoLink = trainData.value.videoLinks[trainData.value.videoLinks.length - 1];
