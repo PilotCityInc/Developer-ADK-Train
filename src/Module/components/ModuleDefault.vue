@@ -1,5 +1,5 @@
 <template>
-  <div class="module-default">
+  <v-container class="module-default pa-0">
     <div class="module-default__instructions">
       <v-expansion-panels v-model="showInstructions" class="module-default__instructions" flat>
         <v-expansion-panel>
@@ -101,13 +101,9 @@
     <br />
     <br />
     <div class="d-flex justify-center">
-      <<<<<<< HEAD
-      <v-btn x-large rounded outlined depressed>Finish</v-btn>
-      =======
       <v-btn :disabled="finishButtonDisabled === 1" x-large outlined depressed>Finish</v-btn>
-      >>>>>>> a96b46ccf59bfd8e9acbcd0c166a48bc799aac5a
     </div>
-  </div>
+  </v-container>
 </template>
 
 <script lang="ts">
