@@ -101,11 +101,11 @@
     <br />
     <br />
     <div class="d-flex justify-center">
-<<<<<<< HEAD
+      <<<<<<< HEAD
       <v-btn x-large rounded outlined depressed>Finish</v-btn>
-=======
+      =======
       <v-btn :disabled="finishButtonDisabled === 1" x-large outlined depressed>Finish</v-btn>
->>>>>>> a96b46ccf59bfd8e9acbcd0c166a48bc799aac5a
+      >>>>>>> a96b46ccf59bfd8e9acbcd0c166a48bc799aac5a
     </div>
   </div>
 </template>
