@@ -200,11 +200,6 @@ export default defineComponent({
     justify-content: center;
     align-items: center;
   }
-  &__container {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-  }
 
   &__video {
     width: 100%;
