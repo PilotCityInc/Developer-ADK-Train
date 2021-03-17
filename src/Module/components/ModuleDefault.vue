@@ -34,7 +34,7 @@
       </v-expansion-panels>
     </div>
     <v-progress-linear
-      class="mt-2"
+      class="mt-3"
       color="#dedede"
       height="2"
       value="100"

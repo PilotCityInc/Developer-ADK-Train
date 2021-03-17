@@ -71,7 +71,7 @@
           <v-icon light x-large :color="selectedColor">mdi-teach</v-icon>
         </div>
         <div class="module__header text-md-h5 text-sm-subtitle-1 d-flex align-center">
-          <input disabled :value="moduleName" type="text" class="module__header-text mb-8" />
+          <input disabled :value="moduleName" type="text" class="module__header-text mb-5" />
         </div>
       </div>
       <div class="module__body">
