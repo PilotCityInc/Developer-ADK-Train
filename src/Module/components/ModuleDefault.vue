@@ -33,14 +33,7 @@
         </v-expansion-panel>
       </v-expansion-panels>
     </div>
-    <v-progress-linear
-      class="module-default__collapse-divider"
-      color="#dedede"
-      height="2"
-      value="100"
-      buffer-value="100"
-      stream
-    />
+    <v-progress-linear color="#dedede" height="2" value="100" buffer-value="100" stream />
 
     <v-expansion-panels tile accordion flat class="module-default__playlist">
       <v-expansion-panel
