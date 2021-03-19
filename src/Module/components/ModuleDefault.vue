@@ -101,7 +101,15 @@
     <br />
     <br />
     <div class="module-default__scope">
-      <v-btn x-large depressed outlined :disabled="finishButtonDisabled === 1" :loading="loading" @click="process()">Finish Activity</v-btn>
+      <v-btn
+        x-large
+        depressed
+        outlined
+        :disabled="finishButtonDisabled === 1"
+        :loading="loading"
+        @click="process()"
+        >Finish Activity</v-btn
+      >
       <v-alert v-if="success || error" class="mt-3" :type="success ? 'success' : 'error'">{{
         message
       }}</v-alert>
@@ -111,7 +119,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from '@vue/composition-api';
-import { loading } from 'pcv4lib/src'
+import { loading } from 'pcv4lib/src';
 import MongoDoc from '../types';
 import Instruct from './ModuleInstruct.vue';
 
@@ -180,8 +188,8 @@ export default defineComponent({
       getYoutubeId,
       videoComplete,
       ...loading(
-        () => programDoc.value.update(
-          () => ({
+        () =>
+          programDoc.value.update(() => ({
             isComplete: true,
             adkIndex: index
           })),
