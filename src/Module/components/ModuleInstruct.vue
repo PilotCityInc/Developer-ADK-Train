@@ -1,20 +1,45 @@
 <template>
   <ValidationObserver v-slot="{}" slim>
-    <!-- <ValidationObserver v-slot="{ invalid }" slim> -->
     <!--  TODO: make the inputs into actual components -->
     <v-container class="module-instruct">
       <div class="module-instruct__container">
         <div class="module-instruct__description">
           <div class="module-instruct__description-label">
             <span>Goal</span>
+            <v-dialog v-model="tutorialDialog" width="516">
+              <template #activator>
+                <v-tooltip right>
+                  <template #activator="{ on, attrs }">
+                    <v-btn v-bind="attrs" icon v-on="on"
+                      ><v-icon color="grey darken-2" @click="tutorialDialog = true"
+                        >mdi-youtube</v-icon
+                      ></v-btn
+                    >
+                  </template>
+                  <span>Watch video overview</span>
+                </v-tooltip>
+              </template>
+              <v-card dark class="login__dialog">
+                <div>
+                  <iframe
+                    width="560"
+                    height="315"
+                    src="https://www.youtube.com/embed/HnEdGFhizHg"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                  ></iframe>
+                </div>
+              </v-card>
+            </v-dialog>
           </div>
 
           <v-textarea
             v-model="goal"
-            row-height="3"
             rows="3"
             outlined
-            class="font-weight-bold text-body-1"
+            class=""
+            rounded
             hide-details
             dense
             auto-grow
@@ -24,30 +49,45 @@
         <div class="module-instruct__instructions">
           <div class="module-instruct__description-label">
             <span>Instructions</span>
+
+            <v-tooltip right>
+              <template #activator="{ on, attrs }">
+                <a
+                  href="https://discord.gg/Q2cEfSf52d"
+                  target="_blank"
+                  style="text-decoration: none"
+                >
+                  <v-btn v-bind="attrs" icon v-on="on"
+                    ><v-icon color="grey darken-2">mdi-face-agent</v-icon></v-btn
+                  ></a
+                >
+              </template>
+              <span>Ask questions & get advice</span>
+            </v-tooltip>
           </div>
           <div
-            v-for="(i, index) in trainInstructions"
+            v-for="(i, index) in boilerInstructions"
             :key="index"
             class="module-instruct__instructions-item"
           >
             <v-avatar
               size="35"
               color="white"
-              class="module-instruct__instructions-av font-weight-bold text-caption d-none d-sm-flex"
+              class="module-instruct__instructions-av font-weight-bold"
             >
               {{ index + 1 }}
             </v-avatar>
 
             <validation-provider v-slot="{ errors }" slim rules="required">
               <v-textarea
-                v-model="trainInstructions[index]"
-                row-height="3"
+                v-model="boilerInstructions[index]"
                 rows="1"
                 outlined
                 hide-details
                 dense
+                rounded
                 :error-messages="errors"
-                class="font-weight-bold text-body-1"
+                class=""
                 auto-grow
                 disabled
               ></v-textarea>
@@ -78,7 +118,7 @@ import { ref } from '@vue/composition-api';
 export default {
   name: 'ModuleInstruct',
   setup() {
-    const trainInstructions = ref([
+    const boilerInstructions = ref([
       'Watch one video after another',
       'Digest, take notes and repeat until complete'
     ]);
@@ -86,9 +126,9 @@ export default {
       'To watch, learn and understand the details of your employer, their project scope and industry'
     ]);
     function populate() {
-      trainInstructions.value.push('');
+      boilerInstructions.value.push('');
     }
-    return { trainInstructions, populate, goal };
+    return { boilerInstructions, populate, tutorialDialog: false, goal };
   }
 };
 </script>
