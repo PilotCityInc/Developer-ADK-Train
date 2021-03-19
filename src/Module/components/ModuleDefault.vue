@@ -111,9 +111,9 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from '@vue/composition-api';
+import { loading } from 'pcv4lib/src'
 import MongoDoc from '../types';
 import Instruct from './ModuleInstruct.vue';
-import { loading } from 'pcv4lib/src'
 
 export default defineComponent({
   name: 'ModuleDefault',
