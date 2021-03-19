@@ -100,8 +100,11 @@
 
     <br />
     <br />
-    <div class="d-flex justify-center">
-      <v-btn :disabled="finishButtonDisabled === 1" x-large outlined depressed>Finish</v-btn>
+    <div class="module-default__scope">
+      <v-btn x-large depressed outlined :disabled="finishButtonDisabled === 1" :loading="loading" @click="process()">Finish Activity</v-btn>
+      <v-alert v-if="success || error" class="mt-3" :type="success ? 'success' : 'error'">{{
+        message
+      }}</v-alert>
     </div>
   </v-container>
 </template>
@@ -110,6 +113,7 @@
 import { computed, defineComponent, ref } from '@vue/composition-api';
 import MongoDoc from '../types';
 import Instruct from './ModuleInstruct.vue';
+import { loading } from 'pcv4lib/src'
 
 export default defineComponent({
   name: 'ModuleDefault',
@@ -129,6 +133,14 @@ export default defineComponent({
         ctx.emit('input', newVal);
       }
     });
+    let index = programDoc.value.data.adks.findIndex(function findResearchObj(obj) {
+      return obj.name === 'train';
+    });
+    if (index === -1)
+      index =
+        programDoc.value.data.adks.push({
+          name: 'train'
+        }) - 1;
     const trainData = computed(() => programDoc.value.data.adks.find(adk => adk.name === 'train'));
     const setupInstructions = ref({
       description: '',
@@ -166,7 +178,16 @@ export default defineComponent({
       programDoc,
       trainData,
       getYoutubeId,
-      videoComplete
+      videoComplete,
+      ...loading(
+        () => programDoc.value.update(
+          () => ({
+            isComplete: true,
+            adkIndex: index
+          })),
+        'Saved',
+        'Something went wrong, try again later'
+      )
     };
   }
 });

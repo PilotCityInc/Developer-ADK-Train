@@ -159,7 +159,15 @@ export default defineComponent({
       programDoc,
       body,
       removeIndex,
-      ...loading(programDoc.value.update, 'Saved', 'Something went wrong, try again later')
+      ...loading(
+        () => programDoc.value.update(
+          () => ({
+            isComplete: true,
+            adkIndex: index
+          })),
+        'Saved',
+        'Something went wrong, try again later'
+      )
     };
   }
 });
