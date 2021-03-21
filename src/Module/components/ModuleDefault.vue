@@ -77,6 +77,7 @@
           <div class="d-flex justify-center">
             <v-checkbox
               v-model="trainData.videoLinks[index].finished"
+              :readonly="userType === 'stakeholder'"
               :v-model="linkObj"
               label="Have you finished the video?"
               @click="videoComplete(index)"
@@ -105,7 +106,7 @@
         x-large
         depressed
         outlined
-        :disabled="finishButtonDisabled === 1"
+        :disabled="finishButtonDisabled === 1 || userType === 'stakeholder'"
         :loading="loading"
         @click="process()"
         >Finish Activity</v-btn
