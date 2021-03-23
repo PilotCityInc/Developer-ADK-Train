@@ -172,27 +172,26 @@ export default defineComponent({
     const showInstructions = ref(true);
     const finishButtonDisabled = ref(1);
     function videoComplete(videoIndex: number) {
-      //   console.log(videoIndex);
-      //   if (trainData.value.videoLinks[videoIndex + 1]) {
-      //     trainData.value.videoLinks[videoIndex + 1].disabled = !trainData.value.videoLinks[
-      //       videoIndex + 1
-      //     ].disabled;
-      //   }
-      //   if (
-      //     !trainData.value.videoLinks[videoIndex].finished &&
-      //     trainData.value.videoLinks[videoIndex + 1]
-      //   ) {
-      //     for (let i = videoIndex; i < trainData.value.videoLinks.length - 1; i += 1) {
-      //       trainData.value.videoLinks[i + 1].disabled = true;
-      //       finishButtonDisabled.value = 1;
-      //     }
-      //   }
-      //   const lastVideoLink = trainData.value.videoLinks[trainData.value.videoLinks.length - 1];
-      //   if (lastVideoLink.finished && !lastVideoLink.disabled) {
-      //     finishButtonDisabled.value = 0;
-      //   } else {
-      //     finishButtonDisabled.value = 1;
-      //   }
+      if (trainData.value.videoLinks[videoIndex + 1]) {
+        trainData.value.videoLinks[videoIndex + 1].disabled = !trainData.value.videoLinks[
+          videoIndex + 1
+        ].disabled;
+      }
+      if (
+        !trainData.value.videoLinks[videoIndex].finished &&
+        trainData.value.videoLinks[videoIndex + 1]
+      ) {
+        for (let i = videoIndex; i < trainData.value.videoLinks.length - 1; i += 1) {
+          trainData.value.videoLinks[i + 1].disabled = true;
+          finishButtonDisabled.value = 1;
+        }
+      }
+      const lastVideoLink = trainData.value.videoLinks[trainData.value.videoLinks.length - 1];
+      if (lastVideoLink.finished && !lastVideoLink.disabled) {
+        finishButtonDisabled.value = 0;
+      } else {
+        finishButtonDisabled.value = 1;
+      }
     }
     function getYoutubeId(url: string) {
       const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
