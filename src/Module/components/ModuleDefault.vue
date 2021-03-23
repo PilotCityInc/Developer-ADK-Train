@@ -120,7 +120,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from '@vue/composition-api';
-import { loading } from 'pcv4lib/src';
+import { loading, getModAdk, getModMongoDoc } from 'pcv4lib/src';
 import MongoDoc from '../types';
 import Instruct from './ModuleInstruct.vue';
 
@@ -137,9 +137,13 @@ export default defineComponent({
     userType: {
       required: true,
       type: String
-      // participant: '',
-      // organizer: '',
-      // stakeholder: ''
+    },
+    studentDoc: {
+      required: false,
+      type: Object as () => MongoDoc,
+      default: {
+        update: async () => {}
+      }
     }
   },
   setup(props, ctx) {
@@ -157,52 +161,60 @@ export default defineComponent({
         programDoc.value.data.adks.push({
           name: 'train'
         }) - 1;
-    const trainData = computed(() => programDoc.value.data.adks.find(adk => adk.name === 'train'));
-    const setupInstructions = ref({
-      description: '',
-      instructions: ['', '', '']
-    });
+    const { adkData: trainData, adkIndex } = getModAdk(
+      props,
+      ctx.emit,
+      'train',
+      { videoLinks: programDoc.value.data.adks[index].videoLinks },
+      'studentDoc'
+    );
+
     const showInstructions = ref(true);
     const finishButtonDisabled = ref(1);
-    function videoComplete(index: number) {
-      if (trainData.value.videoLinks[index + 1]) {
-        trainData.value.videoLinks[index + 1].disabled = !trainData.value.videoLinks[index + 1]
-          .disabled;
-      }
-      if (!trainData.value.videoLinks[index].finished && trainData.value.videoLinks[index + 1]) {
-        for (let i = index; i < trainData.value.videoLinks.length - 1; i += 1) {
-          trainData.value.videoLinks[i + 1].disabled = true;
-          finishButtonDisabled.value = 1;
-        }
-      }
-      const lastVideoLink = trainData.value.videoLinks[trainData.value.videoLinks.length - 1];
-      if (lastVideoLink.finished && !lastVideoLink.disabled) {
-        finishButtonDisabled.value = 0;
-      } else {
-        finishButtonDisabled.value = 1;
-      }
+    function videoComplete(videoIndex: number) {
+      //   console.log(videoIndex);
+      //   if (trainData.value.videoLinks[videoIndex + 1]) {
+      //     trainData.value.videoLinks[videoIndex + 1].disabled = !trainData.value.videoLinks[
+      //       videoIndex + 1
+      //     ].disabled;
+      //   }
+      //   if (
+      //     !trainData.value.videoLinks[videoIndex].finished &&
+      //     trainData.value.videoLinks[videoIndex + 1]
+      //   ) {
+      //     for (let i = videoIndex; i < trainData.value.videoLinks.length - 1; i += 1) {
+      //       trainData.value.videoLinks[i + 1].disabled = true;
+      //       finishButtonDisabled.value = 1;
+      //     }
+      //   }
+      //   const lastVideoLink = trainData.value.videoLinks[trainData.value.videoLinks.length - 1];
+      //   if (lastVideoLink.finished && !lastVideoLink.disabled) {
+      //     finishButtonDisabled.value = 0;
+      //   } else {
+      //     finishButtonDisabled.value = 1;
+      //   }
     }
     function getYoutubeId(url: string) {
       const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
       const match = url.match(regExp);
       return match && match[7].length === 11 ? match[7] : false;
     }
+
     return {
       finishButtonDisabled,
-      setupInstructions,
       showInstructions,
       programDoc,
       trainData,
       getYoutubeId,
       videoComplete,
       ...loading(
-        () =>
-          programDoc.value.update(() => ({
+        async () =>
+          props.studentDoc.update(() => ({
             isComplete: true,
-            adkIndex: index
+            adkIndex
           })),
-        'Saved',
-        'Something went wrong, try again later'
+        'Saved Successfully',
+        'There was a problem'
       )
     };
   }

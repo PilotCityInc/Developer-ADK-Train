@@ -102,6 +102,13 @@ export default defineComponent({
     value: {
       required: true,
       type: Object as () => MongoDoc
+    },
+    studentDoc: {
+      required: false,
+      type: Object as () => MongoDoc,
+      default: {
+        update: async () => {}
+      }
     }
   },
 
@@ -160,8 +167,8 @@ export default defineComponent({
       body,
       removeIndex,
       ...loading(
-        () => programDoc.value.update(
-          () => ({
+        () =>
+          programDoc.value.update(() => ({
             isComplete: true,
             adkIndex: index
           })),
