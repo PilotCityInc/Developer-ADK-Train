@@ -104,8 +104,10 @@
             :is="getComponent"
             v-model="programDoc"
             :user-type="userType"
-            :student-doc="studentDoc || { data: {}, update: () => {} }"
-            @inputStudentDoc="$emit('inputStudentDoc', $event)"
+            :student-doc="studentDoc || { data: { adks: [] }, update: () => {} }"
+            @inputStudentDoc="
+              $emit(userType === 'participant' ? 'inputStudentDoc' : 'dontemit', $event)
+            "
           />
         </div>
       </div>

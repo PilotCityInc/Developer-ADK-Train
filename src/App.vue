@@ -36,7 +36,7 @@ export default defineComponent({
       },
       changeStream: {}
     });
-    const studentDocStub: Ref<MongoDoc> = ref({
+    const studentDocStub: Ref<MongoDoc | null> = ref({
       data: {
         adks: []
       },
@@ -50,7 +50,8 @@ export default defineComponent({
       },
       changeStream: {}
     });
-    const userTypeStub = 'organizer';
+    const userTypeStub: 'organizer' | 'participant' | 'stakeholder' = 'organizer';
+    if (userTypeStub === 'organizer') studentDocStub.value = null;
     return {
       programDocStub,
       userTypeStub,

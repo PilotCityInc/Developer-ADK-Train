@@ -1,6 +1,6 @@
 <template>
   <v-container class="module-default pa-0">
-    <div class="module-default__instructions">
+    <!-- <div class="module-default__instructions">
       <v-expansion-panels v-model="showInstructions" class="module-default__instructions" flat>
         <v-expansion-panel>
           <v-expansion-panel-header
@@ -26,7 +26,6 @@
             <Instruct readonly />
             <div @click="showInstructions = true">
               <div class="module-default__collapse-title">CLOSE</div>
-              <!-- <div class="hr"/> OPTIONAL -->
               <v-icon color="grey lighten-2" class="d-flex justify-center"> mdi-chevron-up </v-icon>
             </div>
           </v-expansion-panel-content>
@@ -40,9 +39,9 @@
       value="100"
       buffer-value="100"
       stream
-    />
+    /> -->
 
-    <v-expansion-panels tile accordion flat class="module-default__playlist">
+    <!-- <v-expansion-panels v-if="trainData" tile accordion flat class="module-default__playlist">
       <v-expansion-panel
         v-for="(linkObj, index) in trainData.videoLinks"
         :key="index"
@@ -78,7 +77,6 @@
             <v-checkbox
               v-model="trainData.videoLinks[index].finished"
               :readonly="userType === 'stakeholder'"
-              :v-model="linkObj"
               label="Have you finished the video?"
               @click="videoComplete(index)"
             >
@@ -97,11 +95,11 @@
           </div>
         </v-expansion-panel-content>
       </v-expansion-panel>
-    </v-expansion-panels>
+    </v-expansion-panels> -->
 
+    <!-- <br />
     <br />
-    <br />
-    <div class="module-default__scope">
+    <div class="module-default__scope justify-center">
       <v-btn
         x-large
         depressed
@@ -114,13 +112,13 @@
       <v-alert v-if="success || error" class="mt-3" :type="success ? 'success' : 'error'">{{
         message
       }}</v-alert>
-    </div>
+    </div> -->
   </v-container>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, ref } from '@vue/composition-api';
-import { loading, getModAdk, getModMongoDoc } from 'pcv4lib/src';
+import { loading, getModAdk } from 'pcv4lib/src';
 import MongoDoc from '../types';
 import Instruct from './ModuleInstruct.vue';
 
@@ -147,74 +145,62 @@ export default defineComponent({
     }
   },
   setup(props, ctx) {
-    const programDoc = computed({
-      get: () => props.value,
-      set: newVal => {
-        ctx.emit('input', newVal);
-      }
-    });
-    let index = programDoc.value.data.adks.findIndex(function findResearchObj(obj) {
-      return obj.name === 'train';
-    });
-    if (index === -1)
-      index =
-        programDoc.value.data.adks.push({
-          name: 'train'
-        }) - 1;
+    console.log(props.studentDoc, {});
     const { adkData: trainData, adkIndex } = getModAdk(
       props,
       ctx.emit,
       'train',
-      { videoLinks: programDoc.value.data.adks[index].videoLinks },
-      'studentDoc'
+      { videoLinks: props.value.data.adks.find(adk => adk.name === 'train')?.videoLinks },
+      'studentDoc',
+      'inputStudentDoc'
     );
+    console.log(trainData.value, props.studentDoc);
 
     const showInstructions = ref(true);
     const finishButtonDisabled = ref(1);
-    function videoComplete(videoIndex: number) {
-      if (trainData.value.videoLinks[videoIndex + 1]) {
-        trainData.value.videoLinks[videoIndex + 1].disabled = !trainData.value.videoLinks[
-          videoIndex + 1
-        ].disabled;
-      }
-      if (
-        !trainData.value.videoLinks[videoIndex].finished &&
-        trainData.value.videoLinks[videoIndex + 1]
-      ) {
-        for (let i = videoIndex; i < trainData.value.videoLinks.length - 1; i += 1) {
-          trainData.value.videoLinks[i + 1].disabled = true;
-          finishButtonDisabled.value = 1;
-        }
-      }
-      const lastVideoLink = trainData.value.videoLinks[trainData.value.videoLinks.length - 1];
-      if (lastVideoLink.finished && !lastVideoLink.disabled) {
-        finishButtonDisabled.value = 0;
-      } else {
-        finishButtonDisabled.value = 1;
-      }
-    }
-    function getYoutubeId(url: string) {
-      const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
-      const match = url.match(regExp);
-      return match && match[7].length === 11 ? match[7] : false;
-    }
-
+    // function videoComplete(videoIndex: number) {
+    //   if (trainData.value.videoLinks[videoIndex + 1]) {
+    //     trainData.value.videoLinks[videoIndex + 1].disabled = !trainData.value.videoLinks[
+    //       videoIndex + 1
+    //     ].disabled;
+    //   }
+    //   if (
+    //     !trainData.value.videoLinks[videoIndex].finished &&
+    //     trainData.value.videoLinks[videoIndex + 1]
+    //   ) {
+    //     for (let i = videoIndex; i < trainData.value.videoLinks.length - 1; i += 1) {
+    //       trainData.value.videoLinks[i + 1].disabled = true;
+    //       finishButtonDisabled.value = 1;
+    //     }
+    //   }
+    //   const lastVideoLink = trainData.value.videoLinks[trainData.value.videoLinks.length - 1];
+    //   if (lastVideoLink.finished && !lastVideoLink.disabled) {
+    //     finishButtonDisabled.value = 0;
+    //   } else {
+    //     finishButtonDisabled.value = 1;
+    //   }
+    // }
+    // function getYoutubeId(url: string) {
+    //   const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+    //   const match = url.match(regExp);
+    //   return match && match[7].length === 11 ? match[7] : false;
+    // }
+    console.log(trainData.value);
     return {
       finishButtonDisabled,
       showInstructions,
-      programDoc,
-      trainData,
-      getYoutubeId,
-      videoComplete,
-      ...loading(
-        async () =>
-          props.studentDoc.update(() => ({
-            isComplete: true,
-            adkIndex
-          })),
-        'Saved Successfully',
-        'There was a problem'
-      )
+      trainData
+      //   getYoutubeId
+      //   videoComplete,
+      //   ...loading(
+      //     async () =>
+      //       props.studentDoc.update(() => ({
+      //         isComplete: true,
+      //         adkIndex
+      //       })),
+      //     'Saved Successfully',
+      //     'There was a problem'
+      //   )
     };
   }
 });
