@@ -75,13 +75,8 @@
           ></iframe>
           <div class="d-flex justify-center">
             <v-checkbox
-<<<<<<< Updated upstream
-              v-model="trainData.videoLinks[index].finished"
-              :readonly="userType === 'stakeholder'"
-=======
               v-model="linkObj.completed"
               :v-model="linkObj"
->>>>>>> Stashed changes
               label="Have you finished the video?"
               @click="videoComplete(index)"
             >
@@ -137,62 +132,6 @@ export default defineComponent({
       required: true,
       type: Object as () => MongoDoc
     },
-<<<<<<< Updated upstream
-    userType: {
-      required: true,
-      type: String
-    },
-    studentDoc: {
-      required: false,
-      type: Object as () => MongoDoc,
-      default: {
-        update: async () => {}
-      }
-    }
-  },
-  setup(props, ctx) {
-    console.log(props.studentDoc, {});
-    const { adkData: trainData, adkIndex } = getModAdk(
-      props,
-      ctx.emit,
-      'train',
-      { videoLinks: props.value.data.adks.find(adk => adk.name === 'train')?.videoLinks },
-      'studentDoc',
-      'inputStudentDoc'
-    );
-    console.log(trainData.value, props.studentDoc);
-
-    const showInstructions = ref(true);
-    const finishButtonDisabled = ref(1);
-    // function videoComplete(videoIndex: number) {
-    //   if (trainData.value.videoLinks[videoIndex + 1]) {
-    //     trainData.value.videoLinks[videoIndex + 1].disabled = !trainData.value.videoLinks[
-    //       videoIndex + 1
-    //     ].disabled;
-    //   }
-    //   if (
-    //     !trainData.value.videoLinks[videoIndex].finished &&
-    //     trainData.value.videoLinks[videoIndex + 1]
-    //   ) {
-    //     for (let i = videoIndex; i < trainData.value.videoLinks.length - 1; i += 1) {
-    //       trainData.value.videoLinks[i + 1].disabled = true;
-    //       finishButtonDisabled.value = 1;
-    //     }
-    //   }
-    //   const lastVideoLink = trainData.value.videoLinks[trainData.value.videoLinks.length - 1];
-    //   if (lastVideoLink.finished && !lastVideoLink.disabled) {
-    //     finishButtonDisabled.value = 0;
-    //   } else {
-    //     finishButtonDisabled.value = 1;
-    //   }
-    // }
-    // function getYoutubeId(url: string) {
-    //   const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
-    //   const match = url.match(regExp);
-    //   return match && match[7].length === 11 ? match[7] : false;
-    // }
-    console.log(trainData.value);
-=======
     studentDoc: {
       required: true,
       type: Object as () => MongoDoc
@@ -250,30 +189,15 @@ export default defineComponent({
       const match = url.match(regExp);
       return match && match[7].length === 11 ? match[7] : false;
     }
->>>>>>> Stashed changes
     return {
       finishButtonDisabled,
       showInstructions,
-<<<<<<< Updated upstream
-      trainData
-      //   getYoutubeId
-      //   videoComplete,
-      //   ...loading(
-      //     async () =>
-      //       props.studentDoc.update(() => ({
-      //         isComplete: true,
-      //         adkIndex
-      //       })),
-      //     'Saved Successfully',
-      //     'There was a problem'
-      //   )
-=======
+      setupInstructions,
       trainData,
       trainAdkData,
       getYoutubeId,
       videoComplete,
       ...loading(() => props.studentDoc.update(), 'Saved', 'Something went wrong, try again later')
->>>>>>> Stashed changes
     };
   }
 });

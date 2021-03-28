@@ -105,13 +105,7 @@
             v-model="programDoc"
             :user-type="userType"
             :student-doc="studentDoc || { data: { adks: [] }, update: () => {} }"
-<<<<<<< Updated upstream
-            @inputStudentDoc="
-              $emit(userType === 'participant' ? 'inputStudentDoc' : 'dontemit', $event)
-            "
-=======
             @inputStudentDoc="userType === 'participant' ? 'inputStundentDoc' : 'n'"
->>>>>>> Stashed changes
           />
         </div>
       </div>
@@ -173,7 +167,6 @@ export default defineComponent({
     userType: {
       required: true,
       type: String
-<<<<<<< Updated upstream
     },
     studentDoc: {
       required: false,
@@ -181,14 +174,6 @@ export default defineComponent({
       default: {
         update: async () => {}
       }
-=======
-      // participant: '',
-      // organizer: '',
-      // stakeholder: ''
-    },
-    studentDoc: {
-      required: true
->>>>>>> Stashed changes
     }
   },
   setup(
