@@ -43,24 +43,24 @@
 
     <!-- <v-expansion-panels v-if="trainData" tile accordion flat class="module-default__playlist">
       <v-expansion-panel
-        v-for="(linkObj, index) in trainData.videoLinks"
+        v-for="(linkObj, index) in trainAdkData.trainProgress"
         :key="index"
         class="module-default__playlist-panel"
-        :disabled="linkObj.disabled"
+        :disabled="!linkObj.unlocked"
       >
         <v-expansion-panel-header
-          :class="{ 'grey--text text--lighten-2': linkObj.disabled === true }"
+          :class="{ 'grey--text text--lighten-2': linkObj.unlocked === false }"
           disable-icon-rotate
           class="module-default__video-title"
         >
           {{ linkObj.name }}
           <template v-slot:actions>
-            <v-icon v-if="linkObj.finished == false && linkObj.disabled == false" color="warning">
+            <v-icon v-if="linkObj.unlocked && !linkObj.completed" color="warning">
               mdi-alert-circle
             </v-icon>
-            <v-icon v-if="linkObj.finished" color="teal">mdi-check</v-icon>
+            <v-icon v-if="linkObj.completed" color="teal">mdi-check</v-icon>
           </template>
-          <v-icon v-if="linkObj.disabled" style="position: absolute; right: 24px" color="error">
+          <v-icon v-if="!linkObj.unlocked" style="position: absolute; right: 24px" color="error">
             mdi-lock-outline
           </v-icon>
         </v-expansion-panel-header>
@@ -75,8 +75,13 @@
           ></iframe>
           <div class="d-flex justify-center">
             <v-checkbox
+<<<<<<< Updated upstream
               v-model="trainData.videoLinks[index].finished"
               :readonly="userType === 'stakeholder'"
+=======
+              v-model="linkObj.completed"
+              :v-model="linkObj"
+>>>>>>> Stashed changes
               label="Have you finished the video?"
               @click="videoComplete(index)"
             >
@@ -132,6 +137,7 @@ export default defineComponent({
       required: true,
       type: Object as () => MongoDoc
     },
+<<<<<<< Updated upstream
     userType: {
       required: true,
       type: String
@@ -186,9 +192,69 @@ export default defineComponent({
     //   return match && match[7].length === 11 ? match[7] : false;
     // }
     console.log(trainData.value);
+=======
+    studentDoc: {
+      required: true,
+      type: Object as () => MongoDoc
+    }
+  },
+  setup(props, ctx) {
+    const trainData = computed(() => props.value.data.adks.find(obj => obj.name === 'train'));
+    const { adkData: trainAdk, adkIndex } = getModAdk(
+      props,
+      ctx.emit,
+      'train',
+      {
+        trainProgress: (trainData.value!.videoLinks as any[]).map((obj: any) => ({
+          ...obj,
+          unlocked: false,
+          completed: false
+        }))
+      },
+      'studentDoc',
+      'inputStudentDoc'
+    );
+    const trainAdkData = ref(trainAdk.value);
+    trainAdkData.value.trainProgress[0].unlocked = true;
+    const setupInstructions = ref({
+      description: '',
+      instructions: ['', '', '']
+    });
+    const showInstructions = ref(true);
+    const finishButtonDisabled = ref(1);
+    function videoComplete(index: number) {
+      if (trainAdkData.value.trainProgress[index + 1]) {
+        trainAdkData.value.trainProgress[index + 1].unlocked = !trainAdkData.value.trainProgress[
+          index + 1
+        ].unlocked;
+      }
+      if (
+        !trainAdkData.value.trainProgress[index].completed &&
+        trainAdkData.value.trainProgress[index + 1]
+      ) {
+        for (let i = index; i < trainAdkData.value.trainProgress.length - 1; i += 1) {
+          trainAdkData.value.trainProgress[i + 1].unlocked = false;
+          finishButtonDisabled.value = 1;
+        }
+      }
+      const lastVideoLink =
+        trainAdkData.value.trainProgress[trainAdkData.value.trainProgress.length - 1];
+      if (lastVideoLink.completed && lastVideoLink.unlocked) {
+        finishButtonDisabled.value = 0;
+      } else {
+        finishButtonDisabled.value = 1;
+      }
+    }
+    function getYoutubeId(url: string) {
+      const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+      const match = url.match(regExp);
+      return match && match[7].length === 11 ? match[7] : false;
+    }
+>>>>>>> Stashed changes
     return {
       finishButtonDisabled,
       showInstructions,
+<<<<<<< Updated upstream
       trainData
       //   getYoutubeId
       //   videoComplete,
@@ -201,6 +267,13 @@ export default defineComponent({
       //     'Saved Successfully',
       //     'There was a problem'
       //   )
+=======
+      trainData,
+      trainAdkData,
+      getYoutubeId,
+      videoComplete,
+      ...loading(() => props.studentDoc.update(), 'Saved', 'Something went wrong, try again later')
+>>>>>>> Stashed changes
     };
   }
 });
