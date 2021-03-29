@@ -169,11 +169,7 @@ export default defineComponent({
       type: String
     },
     studentDoc: {
-      required: false,
-      type: Object as () => MongoDoc,
-      default: {
-        update: async () => {}
-      }
+      required: true
     }
   },
   setup(

@@ -1,6 +1,6 @@
 <template>
   <v-container class="module-default pa-0">
-    <!-- <div class="module-default__instructions">
+    <div class="module-default__instructions">
       <v-expansion-panels v-model="showInstructions" class="module-default__instructions" flat>
         <v-expansion-panel>
           <v-expansion-panel-header
@@ -39,9 +39,9 @@
       value="100"
       buffer-value="100"
       stream
-    /> -->
+    />
 
-    <!-- <v-expansion-panels v-if="trainData" tile accordion flat class="module-default__playlist">
+    <v-expansion-panels v-if="trainData" tile accordion flat class="module-default__playlist">
       <v-expansion-panel
         v-for="(linkObj, index) in trainAdkData.trainProgress"
         :key="index"
@@ -95,9 +95,9 @@
           </div>
         </v-expansion-panel-content>
       </v-expansion-panel>
-    </v-expansion-panels> -->
+    </v-expansion-panels>
 
-    <!-- <br />
+    <br />
     <br />
     <div class="module-default__scope justify-center">
       <v-btn
@@ -112,7 +112,7 @@
       <v-alert v-if="success || error" class="mt-3" :type="success ? 'success' : 'error'">{{
         message
       }}</v-alert>
-    </div> -->
+    </div>
   </v-container>
 </template>
 
