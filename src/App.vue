@@ -24,7 +24,15 @@ export default defineComponent({
   setup() {
     const programDocStub: Ref<MongoDoc> = ref({
       data: {
-        adks: []
+        adks: [
+          {
+            videoLinks: [
+              { name: 'awewea', link: 'eawweaew', required: true },
+              { name: 'aweewa', link: 'waeewa', required: false }
+            ],
+            name: 'train'
+          }
+        ]
       },
       update: () => {
         return new Promise((resolve, reject) => {
@@ -36,7 +44,7 @@ export default defineComponent({
       },
       changeStream: {}
     });
-    const studentDocStub: Ref<MongoDoc> = ref({
+    const studentDocStub: Ref<MongoDoc | null> = ref({
       data: {
         adks: []
       },
@@ -50,7 +58,8 @@ export default defineComponent({
       },
       changeStream: {}
     });
-    const userTypeStub = 'organizer';
+    const userTypeStub: 'organizer' | 'participant' | 'stakeholder' = 'participant';
+    if (userTypeStub === 'organizer') studentDocStub.value = null;
     return {
       programDocStub,
       userTypeStub,

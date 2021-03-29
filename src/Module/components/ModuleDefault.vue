@@ -9,7 +9,7 @@
             class="pa-0"
             @click="showInstructions = true"
           >
-            <template v-slot="{ open }">
+            <template #default="{ open }">
               <v-scroll-y-transition hide-on-leave>
                 <div v-if="!open" class="d-flex flex-column justify-center">
                   <v-icon color="grey lighten-2" class="d-flex justify-center">
@@ -26,7 +26,6 @@
             <Instruct readonly />
             <div @click="showInstructions = true">
               <div class="module-default__collapse-title">CLOSE</div>
-              <!-- <div class="hr"/> OPTIONAL -->
               <v-icon color="grey lighten-2" class="d-flex justify-center"> mdi-chevron-up </v-icon>
             </div>
           </v-expansion-panel-content>
@@ -42,26 +41,26 @@
       stream
     />
 
-    <v-expansion-panels tile accordion flat class="module-default__playlist">
+    <v-expansion-panels v-if="trainData" tile accordion flat class="module-default__playlist">
       <v-expansion-panel
-        v-for="(linkObj, index) in trainData.videoLinks"
+        v-for="(linkObj, index) in trainAdkData.trainProgress"
         :key="index"
         class="module-default__playlist-panel"
-        :disabled="linkObj.disabled"
+        :disabled="!linkObj.unlocked"
       >
         <v-expansion-panel-header
-          :class="{ 'grey--text text--lighten-2': linkObj.disabled === true }"
+          :class="{ 'grey--text text--lighten-2': linkObj.unlocked === false }"
           disable-icon-rotate
           class="module-default__video-title"
         >
           {{ linkObj.name }}
-          <template v-slot:actions>
-            <v-icon v-if="linkObj.finished == false && linkObj.disabled == false" color="warning">
+          <template #actions>
+            <v-icon v-if="linkObj.unlocked && !linkObj.completed" color="warning">
               mdi-alert-circle
             </v-icon>
-            <v-icon v-if="linkObj.finished" color="teal">mdi-check</v-icon>
+            <v-icon v-if="linkObj.completed" color="teal">mdi-check</v-icon>
           </template>
-          <v-icon v-if="linkObj.disabled" style="position: absolute; right: 24px" color="error">
+          <v-icon v-if="!linkObj.unlocked" style="position: absolute; right: 24px" color="error">
             mdi-lock-outline
           </v-icon>
         </v-expansion-panel-header>
@@ -76,8 +75,7 @@
           ></iframe>
           <div class="d-flex justify-center">
             <v-checkbox
-              v-model="trainData.videoLinks[index].finished"
-              :readonly="userType === 'stakeholder'"
+              v-model="linkObj.completed"
               :v-model="linkObj"
               label="Have you finished the video?"
               @click="videoComplete(index)"
@@ -101,7 +99,7 @@
 
     <br />
     <br />
-    <div class="module-default__scope">
+    <div class="module-default__scope justify-center">
       <v-btn
         x-large
         depressed
@@ -120,74 +118,66 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from '@vue/composition-api';
-import { loading, getModAdk, getModMongoDoc } from 'pcv4lib/src';
+import { loading, getModAdk } from 'pcv4lib/src';
 import MongoDoc from '../types';
-import Instruct from './ModuleInstruct.vue';
 
 export default defineComponent({
   name: 'ModuleDefault',
-  components: {
-    Instruct
-  },
   props: {
     value: {
       required: true,
       type: Object as () => MongoDoc
     },
-    userType: {
-      required: true,
-      type: String
-    },
     studentDoc: {
-      required: false,
-      type: Object as () => MongoDoc,
-      default: {
-        update: async () => {}
-      }
+      required: true,
+      type: Object as () => MongoDoc
+    },
+    userType: {
+      required: true
     }
   },
   setup(props, ctx) {
-    const programDoc = computed({
-      get: () => props.value,
-      set: newVal => {
-        ctx.emit('input', newVal);
-      }
-    });
-    let index = programDoc.value.data.adks.findIndex(function findResearchObj(obj) {
-      return obj.name === 'train';
-    });
-    if (index === -1)
-      index =
-        programDoc.value.data.adks.push({
-          name: 'train'
-        }) - 1;
-    const { adkData: trainData, adkIndex } = getModAdk(
+    const trainData = computed(() => props.value.data.adks.find(obj => obj.name === 'train'));
+    const { adkData: trainAdk, adkIndex } = getModAdk(
       props,
       ctx.emit,
       'train',
-      { videoLinks: programDoc.value.data.adks[index].videoLinks },
-      'studentDoc'
+      {
+        trainProgress: (trainData.value!.videoLinks as any[]).map((obj: any) => ({
+          ...obj,
+          unlocked: false,
+          completed: false
+        }))
+      },
+      'studentDoc',
+      'inputStudentDoc'
     );
-
+    const trainAdkData = ref(trainAdk.value);
+    trainAdkData.value.trainProgress[0].unlocked = true;
+    const setupInstructions = ref({
+      description: '',
+      instructions: ['', '', '']
+    });
     const showInstructions = ref(true);
     const finishButtonDisabled = ref(1);
-    function videoComplete(videoIndex: number) {
-      if (trainData.value.videoLinks[videoIndex + 1]) {
-        trainData.value.videoLinks[videoIndex + 1].disabled = !trainData.value.videoLinks[
-          videoIndex + 1
-        ].disabled;
+    function videoComplete(index: number) {
+      if (trainAdkData.value.trainProgress[index + 1]) {
+        trainAdkData.value.trainProgress[index + 1].unlocked = !trainAdkData.value.trainProgress[
+          index + 1
+        ].unlocked;
       }
       if (
-        !trainData.value.videoLinks[videoIndex].finished &&
-        trainData.value.videoLinks[videoIndex + 1]
+        !trainAdkData.value.trainProgress[index].completed &&
+        trainAdkData.value.trainProgress[index + 1]
       ) {
-        for (let i = videoIndex; i < trainData.value.videoLinks.length - 1; i += 1) {
-          trainData.value.videoLinks[i + 1].disabled = true;
+        for (let i = index; i < trainAdkData.value.trainProgress.length - 1; i += 1) {
+          trainAdkData.value.trainProgress[i + 1].unlocked = false;
           finishButtonDisabled.value = 1;
         }
       }
-      const lastVideoLink = trainData.value.videoLinks[trainData.value.videoLinks.length - 1];
-      if (lastVideoLink.finished && !lastVideoLink.disabled) {
+      const lastVideoLink =
+        trainAdkData.value.trainProgress[trainAdkData.value.trainProgress.length - 1];
+      if (lastVideoLink.completed && lastVideoLink.unlocked) {
         finishButtonDisabled.value = 0;
       } else {
         finishButtonDisabled.value = 1;
@@ -198,23 +188,15 @@ export default defineComponent({
       const match = url.match(regExp);
       return match && match[7].length === 11 ? match[7] : false;
     }
-
     return {
       finishButtonDisabled,
       showInstructions,
-      programDoc,
+      setupInstructions,
       trainData,
+      trainAdkData,
       getYoutubeId,
       videoComplete,
-      ...loading(
-        async () =>
-          props.studentDoc.update(() => ({
-            isComplete: true,
-            adkIndex
-          })),
-        'Saved Successfully',
-        'There was a problem'
-      )
+      ...loading(() => props.studentDoc.update(), 'Saved', 'Something went wrong, try again later')
     };
   }
 });

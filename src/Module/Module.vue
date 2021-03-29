@@ -104,8 +104,8 @@
             :is="getComponent"
             v-model="programDoc"
             :user-type="userType"
-            :student-doc="studentDoc || { data: {}, update: () => {} }"
-            @inputStudentDoc="$emit('inputStudentDoc', $event)"
+            :student-doc="studentDoc || { data: { adks: [] }, update: () => {} }"
+            @inputStudentDoc="userType === 'participant' ? 'inputStundentDoc' : 'n'"
           />
         </div>
       </div>
@@ -169,11 +169,7 @@ export default defineComponent({
       type: String
     },
     studentDoc: {
-      required: false,
-      type: Object as () => MongoDoc,
-      default: {
-        update: async () => {}
-      }
+      required: true
     }
   },
   setup(
