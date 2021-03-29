@@ -196,7 +196,15 @@ export default defineComponent({
       trainAdkData,
       getYoutubeId,
       videoComplete,
-      ...loading(() => props.studentDoc.update(), 'Saved', 'Something went wrong, try again later')
+      ...loading(
+        () =>
+          props.studentDoc.update(() => ({
+            isComplete: true,
+            adkIndex
+          })),
+        'Saved',
+        'Something went wrong, try again later'
+      )
     };
   }
 });
