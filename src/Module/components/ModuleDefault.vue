@@ -159,7 +159,7 @@ export default defineComponent({
       instructions: ['', '', '']
     });
     const showInstructions = ref(true);
-    const finishButtonDisabled = ref(1);
+    const finishButtonDisabled = ref(!trainAdk.value.completed);
     function videoComplete(index: number) {
       if (trainAdkData.value.trainProgress[index + 1]) {
         trainAdkData.value.trainProgress[index + 1].unlocked = !trainAdkData.value.trainProgress[
