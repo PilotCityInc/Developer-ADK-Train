@@ -180,7 +180,6 @@ export default defineComponent({
         trainAdkData.value.trainProgress[trainAdkData.value.trainProgress.length - 1];
       if (lastVideoLink.completed && lastVideoLink.unlocked) {
         finishButtonDisabled.value = !trainAdk.value.completed;
-        console.log(trainAdk.value.completed);
       } else {
         finishButtonDisabled.value = trainAdk.value.completed;
       }
