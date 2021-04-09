@@ -105,7 +105,7 @@
         depressed
         rounded
         outlined
-        :disabled="finishButtonDisabled === 1 || userType === 'stakeholder'"
+        :disabled="!finishButtonDisabled || userType === 'stakeholder'"
         :loading="loading"
         @click="process()"
         >Complete</v-btn
@@ -160,7 +160,9 @@ export default defineComponent({
       instructions: ['', '', '']
     });
     const showInstructions = ref(true);
-    const finishButtonDisabled = ref(1);
+    const finishButtonDisabled = ref(
+      trainAdkData.value.trainProgress.every((item: any) => (item.completed ? true : null))
+    );
     function videoComplete(index: number) {
       if (trainAdkData.value.trainProgress[index + 1]) {
         trainAdkData.value.trainProgress[index + 1].unlocked = !trainAdkData.value.trainProgress[
@@ -172,16 +174,15 @@ export default defineComponent({
         trainAdkData.value.trainProgress[index + 1]
       ) {
         for (let i = index; i < trainAdkData.value.trainProgress.length - 1; i += 1) {
-          trainAdkData.value.trainProgress[i + 1].unlocked = false;
-          finishButtonDisabled.value = 1;
+          trainAdkData.value.trainProgress[i + 1].unlocked = trainAdk.value.completed;
         }
       }
       const lastVideoLink =
         trainAdkData.value.trainProgress[trainAdkData.value.trainProgress.length - 1];
       if (lastVideoLink.completed && lastVideoLink.unlocked) {
-        finishButtonDisabled.value = 0;
+        finishButtonDisabled.value = !trainAdk.value.completed;
       } else {
-        finishButtonDisabled.value = 1;
+        finishButtonDisabled.value = trainAdk.value.completed;
       }
     }
     function getYoutubeId(url: string) {
