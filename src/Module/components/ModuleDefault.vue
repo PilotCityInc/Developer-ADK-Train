@@ -100,19 +100,28 @@
     <br />
     <br />
     <div class="module-default__scope justify-center">
+      <v-btn class="mr-2" x-large outlined depressed :loading="saveLoading" @click="saveProcess">
+        Save
+      </v-btn>
       <v-btn
+        class="ml-2"
         x-large
         depressed
-        rounded
         outlined
         :disabled="!finishButtonDisabled || userType === 'stakeholder'"
         :loading="loading"
         @click="process()"
-        >Complete</v-btn
+        >Finish Activity</v-btn
       >
-      <v-alert v-if="success || error" class="mt-3" :type="success ? 'success' : 'error'">{{
-        message
-      }}</v-alert>
+      <v-alert v-if="success || error" class="mt-3" :type="success ? 'success' : 'error'"
+        >{{ message }}
+      </v-alert>
+      <v-alert
+        v-if="saveSuccess || saveError"
+        class="mt-3"
+        :type="saveSuccess ? 'success' : 'error'"
+        >{{ saveMessage }}</v-alert
+      >
     </div>
   </v-container>
 </template>
@@ -160,6 +169,14 @@ export default defineComponent({
       instructions: ['', '', '']
     });
     const showInstructions = ref(true);
+    const status = ref('');
+    const {
+      loading: saveLoading,
+      process: saveProcess,
+      message: saveMessage,
+      error: saveError,
+      success: saveSuccess
+    } = loading(() => props.studentDoc.update(), 'Saved', 'Something went wrong, try again later');
     const finishButtonDisabled = ref(
       trainAdkData.value.trainProgress.every((item: any) => (item.completed ? true : null))
     );
@@ -195,7 +212,13 @@ export default defineComponent({
       showInstructions,
       setupInstructions,
       trainData,
+      saveMessage,
+      saveError,
+      saveLoading,
+      saveSuccess,
       trainAdkData,
+      status,
+      saveProcess,
       getYoutubeId,
       videoComplete,
       ...loading(
