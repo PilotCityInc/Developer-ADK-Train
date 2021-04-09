@@ -88,7 +88,7 @@
               outlined
               x-small
               a
-              href="https://www.youtube.com/channel/UCNQZIRiTx54gNzMji3iHgJg"
+              href="https://www.youtube.com/pilotcity"
               target="_blank"
               >Subscribe to PilotCity YouTube</v-btn
             >
@@ -107,11 +107,12 @@
         class="ml-2"
         x-large
         depressed
+        rounded
         outlined
         :disabled="!finishButtonDisabled || userType === 'stakeholder'"
         :loading="loading"
         @click="process()"
-        >Finish Activity</v-btn
+        >Complete</v-btn
       >
       <v-alert v-if="success || error" class="mt-3" :type="success ? 'success' : 'error'"
         >{{ message }}
