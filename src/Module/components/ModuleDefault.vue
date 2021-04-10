@@ -100,7 +100,14 @@
     <br />
     <br />
     <div class="module-default__scope justify-center">
-      <v-btn class="mr-2" x-large outlined depressed :loading="saveLoading" @click="saveProcess">
+      <v-btn
+        class="mr-2"
+        x-large
+        rounded
+        outlined
+        depressed
+        :loading="saveLoading"
+        @click="saveProcess">
         Save
       </v-btn>
       <v-btn
