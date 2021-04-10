@@ -176,12 +176,7 @@ export default defineComponent({
       message: saveMessage,
       error: saveError,
       success: saveSuccess
-    } = loading(
-      () => props.studentDoc = trainAdkData, 
-      props.studentDoc.update(), 
-      'Saved', 
-      'Something went wrong, try again later'
-    );
+    } = loading(() => props.studentDoc.update(), 'Saved', 'Something went wrong, try again later');
     const finishButtonDisabled = ref(
       trainAdkData.value.trainProgress.every((item: any) => (item.completed ? true : null))
     );
