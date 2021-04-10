@@ -76,7 +76,6 @@
           <div class="d-flex justify-center">
             <v-checkbox
               v-model="linkObj.completed"
-              :v-model="linkObj"
               label="Have you finished the video?"
               @click="videoComplete(index)"
             >
