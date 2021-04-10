@@ -13,11 +13,12 @@ services:
       - MEMORY_LIMIT=2048
       - MAX_THREADS=4
       - npm_config_unsafe_perm=true
+      - COMPOSE_HTTP_TIMEOUT=1000
     volumes:
       - ./:/usr/src/app
       - usr/src/app/node_modules
     ports:
-      - 8007:8080
+      - 8080:8080
     stdin_open: true
     tty: true
     command: ["yarn","run","serve"]

@@ -170,14 +170,18 @@ export default defineComponent({
       instructions: ['', '', '']
     });
     const showInstructions = ref(true);
-    const status = ref('');
     const {
       loading: saveLoading,
       process: saveProcess,
       message: saveMessage,
       error: saveError,
       success: saveSuccess
-    } = loading(() => props.studentDoc.update(), 'Saved', 'Something went wrong, try again later');
+    } = loading(
+      () => props.studentDoc = trainAdkData, 
+      props.studentDoc.update(), 
+      'Saved', 
+      'Something went wrong, try again later'
+    );
     const finishButtonDisabled = ref(
       trainAdkData.value.trainProgress.every((item: any) => (item.completed ? true : null))
     );
@@ -192,15 +196,16 @@ export default defineComponent({
         trainAdkData.value.trainProgress[index + 1]
       ) {
         for (let i = index; i < trainAdkData.value.trainProgress.length - 1; i += 1) {
-          trainAdkData.value.trainProgress[i + 1].unlocked = trainAdk.value.completed;
+          trainAdkData.value.trainProgress[i + 1].unlocked = false;
+          trainAdkData.value.trainProgress[i + 1].completed = false;
         }
       }
       const lastVideoLink =
         trainAdkData.value.trainProgress[trainAdkData.value.trainProgress.length - 1];
       if (lastVideoLink.completed && lastVideoLink.unlocked) {
-        finishButtonDisabled.value = !trainAdk.value.completed;
+        finishButtonDisabled.value = true;
       } else {
-        finishButtonDisabled.value = trainAdk.value.completed;
+        finishButtonDisabled.value = false;
       }
     }
     function getYoutubeId(url: string) {
