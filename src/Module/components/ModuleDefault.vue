@@ -106,7 +106,8 @@
         outlined
         depressed
         :loading="saveLoading"
-        @click="saveProcess">
+        @click="saveProcess"
+      >
         Save
       </v-btn>
       <v-btn
@@ -224,7 +225,6 @@ export default defineComponent({
       saveLoading,
       saveSuccess,
       trainAdkData,
-      status,
       saveProcess,
       getYoutubeId,
       videoComplete,
