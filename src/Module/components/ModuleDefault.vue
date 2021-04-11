@@ -1,8 +1,7 @@
 <template>
   <v-container class="module-default pa-0">
     <div class="module-default__instructions">
-      <v-expansion-panels v-model="showInstructions"
-class="module-default__instructions" flat>
+      <v-expansion-panels v-model="showInstructions" class="module-default__instructions" flat>
         <v-expansion-panel>
           <v-expansion-panel-header
             v-show="showInstructions"
@@ -12,14 +11,11 @@ class="module-default__instructions" flat>
           >
             <template #default="{ open }">
               <v-scroll-y-transition hide-on-leave>
-                <div v-if="!open"
-class="d-flex flex-column justify-center">
-                  <v-icon color="grey lighten-2"
-class="d-flex justify-center">
+                <div v-if="!open" class="d-flex flex-column justify-center">
+                  <v-icon color="grey lighten-2" class="d-flex justify-center">
                     mdi-chevron-down
                   </v-icon>
-                  <div color="grey lighten-2"
-class="module-default__collapse-title">
+                  <div color="grey lighten-2" class="module-default__collapse-title">
                     INSTRUCTIONS
                   </div>
                 </div>
@@ -29,7 +25,8 @@ class="module-default__collapse-title">
           <v-expansion-panel-content>
             <Instruct readonly />
             <div @click="showInstructions = true">
-              <div class="module-default__collapse-title">CLOSE
+              <div class="module-default__collapse-title">
+CLOSE
 </div>
               <v-icon color="grey lighten-2"
 class="d-flex justify-center"
@@ -50,8 +47,7 @@ mdi-chevron-up
       stream
     />
 
-    <v-expansion-panels v-if="trainData"
-tile accordion flat class="module-default__playlist">
+    <v-expansion-panels v-if="trainData" tile accordion flat class="module-default__playlist">
       <v-expansion-panel
         v-for="(linkObj, index) in trainAdkData.trainProgress"
         :key="index"
@@ -65,8 +61,7 @@ tile accordion flat class="module-default__playlist">
         >
           {{ linkObj.name }}
           <template #actions>
-            <v-icon v-if="linkObj.unlocked && !linkObj.completed"
-color="warning">
+            <v-icon v-if="linkObj.unlocked && !linkObj.completed" color="warning">
               mdi-alert-circle
             </v-icon>
             <v-icon v-if="linkObj.completed"
@@ -75,8 +70,7 @@ color="teal"
 mdi-check
 </v-icon>
           </template>
-          <v-icon v-if="!linkObj.unlocked"
-style="position: absolute; right: 24px" color="error">
+          <v-icon v-if="!linkObj.unlocked" style="position: absolute; right: 24px" color="error">
             mdi-lock-outline
           </v-icon>
         </v-expansion-panel-header>
@@ -112,8 +106,8 @@ style="position: absolute; right: 24px" color="error">
       </v-expansion-panel>
     </v-expansion-panels>
 
-    <br >
-    <br >
+    <br />
+    <br />
     <div class="module-default__scope justify-center">
       <v-btn
         class="mr-2"
@@ -127,11 +121,11 @@ style="position: absolute; right: 24px" color="error">
         Save
       </v-btn>
       <v-btn
-        class="ml-2"
         x-large
         depressed
         rounded
-        outlined
+        color="#6eba80"
+        class="white--text ml-2"
         :disabled="!finishButtonDisabled || userType === 'stakeholder'"
         :loading="loading"
         @click="process()"
