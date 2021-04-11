@@ -1,7 +1,11 @@
 <template>
-  <ValidationObserver v-slot="{ invalid }" slim>
+  <ValidationObserver
+v-slot="{ invalid }" slim
+>
     <v-container class="module-edit">
-      <div :ref="body" class="module-edit__body">
+      <div
+:ref="body" class="module-edit__body"
+>
         <div class="module-edit__container">
           <!-- <div class="module-edit__video">Name</div>
           <div class="module-edit__link">Link</div>
@@ -13,15 +17,17 @@
           class="module-edit__inputs"
         >
           <div class="module-edit__inputs-video">
-            <validation-provider v-slot="{ errors }" slim rules="required">
+            <validation-provider
+v-slot="{ errors }" slim
+rules="required"
+>
               <v-text-field
                 v-model="i.name"
                 rounded
                 :error-messages="errors"
                 label="Video Name"
                 outlined
-              >
-              </v-text-field>
+              />
               <!-- <div>{{ i.name }}</div> -->
             </validation-provider>
           </div>
@@ -39,7 +45,7 @@
                 label="Video Link"
                 :error-messages="errors"
                 outlined
-              ></v-text-field>
+              />
             </validation-provider>
           </div>
           <div class="module-edit__inputs-required">
@@ -50,8 +56,9 @@
               x-large
               outlined
               @click="removeIndex(linkIndex)"
-              >Delete</v-btn
             >
+              Delete
+            </v-btn>
           </div>
         </div>
 
@@ -66,7 +73,9 @@
             :ripple="false"
             @click="populate()"
           >
-            <v-icon class="module-edit__add-icon"> mdi-plus </v-icon>
+            <v-icon class="module-edit__add-icon">
+mdi-plus
+</v-icon>
           </v-btn>
         </div>
 
@@ -80,12 +89,18 @@
             depressed
             :loading="loading"
             @click="process()"
-            >Save</v-btn
           >
+            Save
+          </v-btn>
         </div>
-        <v-alert v-if="success || error" class="mt-3" :type="success ? 'success' : 'error'">{{
-          message
-        }}</v-alert>
+        <v-alert
+          v-if="success || error"
+          dense
+          class="mt-3 white--text presets__alert"
+          :color="success ? 'green' : 'red'"
+        >
+          {{ message }}
+        </v-alert>
       </div>
     </v-container>
   </ValidationObserver>
@@ -170,8 +185,8 @@ export default defineComponent({
             isComplete: true,
             adkIndex: index
           })),
-        'Saved',
-        'Something went wrong, try again later'
+        'Success',
+        'Try again later'
       )
     };
   }

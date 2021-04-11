@@ -1,7 +1,8 @@
 <template>
   <v-container class="module-default pa-0">
     <div class="module-default__instructions">
-      <v-expansion-panels v-model="showInstructions" class="module-default__instructions" flat>
+      <v-expansion-panels v-model="showInstructions"
+class="module-default__instructions" flat>
         <v-expansion-panel>
           <v-expansion-panel-header
             v-show="showInstructions"
@@ -11,11 +12,14 @@
           >
             <template #default="{ open }">
               <v-scroll-y-transition hide-on-leave>
-                <div v-if="!open" class="d-flex flex-column justify-center">
-                  <v-icon color="grey lighten-2" class="d-flex justify-center">
+                <div v-if="!open"
+class="d-flex flex-column justify-center">
+                  <v-icon color="grey lighten-2"
+class="d-flex justify-center">
                     mdi-chevron-down
                   </v-icon>
-                  <div color="grey lighten-2" class="module-default__collapse-title">
+                  <div color="grey lighten-2"
+class="module-default__collapse-title">
                     INSTRUCTIONS
                   </div>
                 </div>
@@ -25,8 +29,13 @@
           <v-expansion-panel-content>
             <Instruct readonly />
             <div @click="showInstructions = true">
-              <div class="module-default__collapse-title">CLOSE</div>
-              <v-icon color="grey lighten-2" class="d-flex justify-center"> mdi-chevron-up </v-icon>
+              <div class="module-default__collapse-title">CLOSE
+</div>
+              <v-icon color="grey lighten-2"
+class="d-flex justify-center"
+>
+mdi-chevron-up
+</v-icon>
             </div>
           </v-expansion-panel-content>
         </v-expansion-panel>
@@ -41,7 +50,8 @@
       stream
     />
 
-    <v-expansion-panels v-if="trainData" tile accordion flat class="module-default__playlist">
+    <v-expansion-panels v-if="trainData"
+tile accordion flat class="module-default__playlist">
       <v-expansion-panel
         v-for="(linkObj, index) in trainAdkData.trainProgress"
         :key="index"
@@ -55,12 +65,18 @@
         >
           {{ linkObj.name }}
           <template #actions>
-            <v-icon v-if="linkObj.unlocked && !linkObj.completed" color="warning">
+            <v-icon v-if="linkObj.unlocked && !linkObj.completed"
+color="warning">
               mdi-alert-circle
             </v-icon>
-            <v-icon v-if="linkObj.completed" color="teal">mdi-check</v-icon>
+            <v-icon v-if="linkObj.completed"
+color="teal"
+>
+mdi-check
+</v-icon>
           </template>
-          <v-icon v-if="!linkObj.unlocked" style="position: absolute; right: 24px" color="error">
+          <v-icon v-if="!linkObj.unlocked"
+style="position: absolute; right: 24px" color="error">
             mdi-lock-outline
           </v-icon>
         </v-expansion-panel-header>
@@ -72,15 +88,14 @@
             frameborder="0"
             allow="autoplay; encrypted-media"
             allowfullscreen
-          ></iframe>
+          />
           <div class="d-flex justify-center">
             <v-checkbox
               v-model="linkObj.completed"
               :v-model="linkObj"
               label="Have you finished the video?"
               @click="videoComplete(index)"
-            >
-            </v-checkbox>
+            />
           </div>
           <div class="d-flex justify-center mt-2 mb-4">
             <v-btn
@@ -90,15 +105,16 @@
               a
               href="https://www.youtube.com/pilotcity"
               target="_blank"
-              >Subscribe to PilotCity YouTube</v-btn
             >
+              Subscribe to PilotCity YouTube
+            </v-btn>
           </div>
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
 
-    <br />
-    <br />
+    <br >
+    <br >
     <div class="module-default__scope justify-center">
       <v-btn
         class="mr-2"
@@ -107,7 +123,8 @@
         outlined
         depressed
         :loading="saveLoading"
-        @click="saveProcess">
+        @click="saveProcess"
+      >
         Save
       </v-btn>
       <v-btn
@@ -119,17 +136,25 @@
         :disabled="!finishButtonDisabled || userType === 'stakeholder'"
         :loading="loading"
         @click="process()"
-        >Complete</v-btn
       >
-      <v-alert v-if="success || error" class="mt-3" :type="success ? 'success' : 'error'"
-        >{{ message }}
+        Complete
+      </v-btn>
+      <v-alert
+        v-if="success || error"
+        dense
+        class="mt-3 white--text presets__alert"
+        :color="success ? 'green' : 'red'"
+      >
+        {{ message }}
       </v-alert>
       <v-alert
         v-if="saveSuccess || saveError"
-        class="mt-3"
-        :type="saveSuccess ? 'success' : 'error'"
-        >{{ saveMessage }}</v-alert
+        dense
+        class="mt-3 white--text presets__alert"
+        :color="saveSuccess ? 'green' : 'red'"
       >
+        {{ saveMessage }}
+      </v-alert>
     </div>
   </v-container>
 </template>
@@ -183,7 +208,7 @@ export default defineComponent({
       message: saveMessage,
       error: saveError,
       success: saveSuccess
-    } = loading(() => props.studentDoc.update(), 'Saved', 'Something went wrong, try again later');
+    } = loading(() => props.studentDoc.update(), 'Success', 'Try again later');
     const finishButtonDisabled = ref(
       trainAdkData.value.trainProgress.every((item: any) => (item.completed ? true : null))
     );
@@ -235,8 +260,8 @@ export default defineComponent({
             isComplete: true,
             adkIndex
           })),
-        'Saved',
-        'Something went wrong, try again later'
+        'Success',
+        'Try again later'
       )
     };
   }
