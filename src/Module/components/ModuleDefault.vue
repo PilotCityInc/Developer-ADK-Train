@@ -92,7 +92,6 @@ style="position: absolute; right: 24px" color="error">
           <div class="d-flex justify-center">
             <v-checkbox
               v-model="linkObj.completed"
-              :v-model="linkObj"
               label="Have you finished the video?"
               @click="videoComplete(index)"
             />
@@ -250,7 +249,6 @@ export default defineComponent({
       saveLoading,
       saveSuccess,
       trainAdkData,
-      status,
       saveProcess,
       getYoutubeId,
       videoComplete,
