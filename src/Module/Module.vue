@@ -105,7 +105,7 @@
             v-model="programDoc"
             :user-type="userType"
             :student-doc="studentDoc || { data: { adks: [] }, update: () => {} }"
-            @inputStudentDoc="userType === 'participant' ? 'inputStundentDoc' : 'n'"
+            @inputStudentDoc="userType === 'participant' ? 'inputStudentDoc' : 'n'"
           />
         </div>
       </div>
