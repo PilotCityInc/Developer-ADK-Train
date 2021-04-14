@@ -47,11 +47,12 @@ mdi-chevron-up
       stream
     />
 
-    <v-expansion-panels v-if="trainData" tile accordion flat class="module-default__playlist">
+    <v-expansion-panels v-if="trainData" v-model="panel" tile accordion flat class="module-default__playlist">
       <v-expansion-panel
         v-for="(linkObj, index) in trainAdkData.trainProgress"
         :key="index"
         class="module-default__playlist-panel"
+        v-model="panel"
         :disabled="!linkObj.unlocked"
       >
         <v-expansion-panel-header
@@ -190,6 +191,10 @@ export default defineComponent({
     );
     const trainAdkData = ref(trainAdk.value);
     trainAdkData.value.trainProgress[0].unlocked = true;
+    const panel = trainAdkData.value.trainProgress.findIndex(
+      (obj: any) => obj.unlocked && !obj.completed
+    );
+    console.log(panel);
     const setupInstructions = ref({
       description: '',
       instructions: ['', '', '']
@@ -246,6 +251,7 @@ export default defineComponent({
       saveProcess,
       getYoutubeId,
       videoComplete,
+      panel,
       ...loading(
         () =>
           props.studentDoc.update(() => ({
