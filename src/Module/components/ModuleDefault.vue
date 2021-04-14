@@ -25,14 +25,9 @@
           <v-expansion-panel-content>
             <Instruct readonly />
             <div @click="showInstructions = true">
-              <div class="module-default__collapse-title">
-CLOSE
-</div>
+              <div class="module-default__collapse-title">CLOSE</div>
               <v-icon color="grey lighten-2"
-class="d-flex justify-center"
->
-mdi-chevron-up
-</v-icon>
+class="d-flex justify-center"> mdi-chevron-up </v-icon>
             </div>
           </v-expansion-panel-content>
         </v-expansion-panel>
@@ -65,11 +60,7 @@ mdi-chevron-up
             <v-icon v-if="linkObj.unlocked && !linkObj.completed" color="warning">
               mdi-alert-circle
             </v-icon>
-            <v-icon v-if="linkObj.completed"
-color="teal"
->
-mdi-check
-</v-icon>
+            <v-icon v-if="linkObj.completed" color="teal"> mdi-check </v-icon>
           </template>
           <v-icon v-if="!linkObj.unlocked" style="position: absolute; right: 24px" color="error">
             mdi-lock-outline
