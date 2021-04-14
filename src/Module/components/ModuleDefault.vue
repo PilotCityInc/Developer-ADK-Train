@@ -194,7 +194,6 @@ export default defineComponent({
     const panel = trainAdkData.value.trainProgress.findIndex(
       (obj: any) => obj.unlocked && !obj.completed
     );
-    console.log(panel);
     const setupInstructions = ref({
       description: '',
       instructions: ['', '', '']
