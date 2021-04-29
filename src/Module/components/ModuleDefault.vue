@@ -26,8 +26,7 @@
             <Instruct readonly />
             <div @click="showInstructions = true">
               <div class="module-default__collapse-title">CLOSE</div>
-              <v-icon color="grey lighten-2"
-class="d-flex justify-center"> mdi-chevron-up </v-icon>
+              <v-icon color="grey lighten-2" class="d-flex justify-center"> mdi-chevron-up </v-icon>
             </div>
           </v-expansion-panel-content>
         </v-expansion-panel>
@@ -42,7 +41,14 @@ class="d-flex justify-center"> mdi-chevron-up </v-icon>
       stream
     />
 
-    <v-expansion-panels v-if="trainData" v-model="panel" tile accordion flat class="module-default__playlist">
+    <v-expansion-panels
+      v-if="trainData"
+      v-model="panel"
+      tile
+      accordion
+      flat
+      class="module-default__playlist"
+    >
       <v-expansion-panel
         v-for="(linkObj, index) in trainAdkData.trainProgress"
         :key="index"
@@ -148,9 +154,13 @@ class="d-flex justify-center"> mdi-chevron-up </v-icon>
 import { computed, defineComponent, ref } from '@vue/composition-api';
 import { loading, getModAdk } from 'pcv4lib/src';
 import MongoDoc from '../types';
+import Instruct from './ModuleInstruct.vue';
 
 export default defineComponent({
   name: 'ModuleDefault',
+  components: {
+    Instruct
+  },
   props: {
     value: {
       required: true,
